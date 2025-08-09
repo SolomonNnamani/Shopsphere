@@ -1,10 +1,12 @@
 const payment = (app) => {
+	const dotenv = require("dotenv");
+	
 let Stripe = require('stripe')
-const dotenv = require("dotenv");
+dotenv.config();
  const authMiddleware  = require("../../../middleware/mainSite/authMiddleware.js")
 const SK_TEST_SECRET_KEY = process.env.SK_TEST
 const stripePass = new Stripe(`${SK_TEST_SECRET_KEY}`)
-  dotenv.config();
+  
 
 
 app.post('/api/payment/create-payment-intent', authMiddleware, async (req,res)=> {
