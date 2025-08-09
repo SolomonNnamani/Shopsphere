@@ -1,8 +1,5 @@
 import {useEffect, useState} from 'react'
-import img1 from '../../reuseable/webimages/Hero/img1.jpg'
-import img2 from '../../reuseable/webimages/Hero/img2.jpg'
-import img3 from '../../reuseable/webimages/Hero/img3.jpg'
-import img4 from '../../reuseable/webimages/Hero/img4.jpg'
+
 
 
 const GridLink = () => {
