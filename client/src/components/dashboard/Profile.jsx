@@ -216,7 +216,7 @@ const Profile = ({theme,setLoading}) => {
     "/upload/w_1200,q_85,f_auto,dpr_auto/"
   )}
           alt="Preview"
-          className="w-9 h-9 rounded-full object-cover borde "
+          className="w-6 h-6 md:w-9 md:h-9 rounded-full object-cover borde "
         />
       ) : (
         <FaUserCircle className="text-4xl text-slate-300" />
@@ -225,9 +225,9 @@ const Profile = ({theme,setLoading}) => {
 
       {/**Hover menu */}
  <div
-  className={`absolute z-20 right-0 top-[49px] md:top-[115px] w-96 ${
+  className={`absolute z-20 -left-70 md:-left-90   top-[49px] md:top-[115px]  md:w-96 ${
     toggle ? "block" : "hidden"
-  } rounded-2xl p-6 transition-all duration-200 ${
+  } rounded-2xl p-3 md:p-6 transition-all duration-200 ${
     theme ? "border border-[#3d4b55] bg-[rgb(23,29,33)]" : "bg-white border border-gray-200 shadow-md"
   }`}
 >
@@ -240,7 +240,7 @@ const Profile = ({theme,setLoading}) => {
     "/upload/w_1200,q_85,f_auto,dpr_auto/"
   )}
         alt="Preview"
-        className="w-20 h-20 rounded-full object-cover"
+        className="w-15 h-15 md:w-20 md:h-20 rounded-full object-cover"
       />
     ) : (
       <FaUserCircle className="w-20 h-20 text-slate-300" />

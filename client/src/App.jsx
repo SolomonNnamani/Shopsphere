@@ -25,6 +25,7 @@ import Checkout from "./components/mainSite/checkout/Checkout.jsx"
 import TrackOrder from "./components/mainSite/checkout/TrackOrder.jsx"
 import AllProducts from "./components/mainSite/allProducts/AllProducts.jsx"
 import Category from "./components/mainSite/allProducts/Category.jsx"
+import NotFound from "./components/mainSite/NotFound/notFound.jsx"
 
 
 
@@ -146,6 +147,7 @@ function App() {
           <Route path="/track-order/:orderNumber" element={<MainSite noSidebar={true}> <TrackOrder /> </MainSite>} />
           <Route path="/products/category/all" element={<MainSite><AllProducts/> </MainSite>} />
           <Route path="/products/category/:category" element={<MainSite><Category/> </MainSite>} />
+            <Route path="*" element={<MainSite><NotFound/> </MainSite>} />
 
             </>
             )}

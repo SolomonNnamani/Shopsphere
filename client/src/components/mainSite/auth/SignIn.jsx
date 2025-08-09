@@ -6,6 +6,10 @@ import AnimatedLogo from "../../reuseable/AnimatedLogo";
 import { FaGoogle } from "react-icons/fa";
 import ImageTimer from '../../reuseable/ImageTimer'
 import { toast } from "react-toastify";
+import {fetchPublic} from '../utils/fetchPublic.js'
+
+
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
 
 const SignIn = () => {
@@ -95,7 +99,7 @@ const SignIn = () => {
      const params = new URLSearchParams(location.search);
     const redirectTo = params.get('redirect')
     try {
-      const res = await fetch("http://localhost:5000/auth/sign-in", {
+      const res = await fetchPublic("/auth/sign-in", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -230,7 +234,7 @@ const SignIn = () => {
           font-bold flex items-center justify-center mt-5 hover:bg-amber-600 headerLight active:scale-95 transition-transform duration-100 "
             onClick={() =>
               (window.location.href =
-                "http://localhost:5000/auth/google?origin=sign-in")
+                `${baseUrl}/auth/google?origin=sign-in`)
             }
           >
            <span className="text-blue-500 mr-1">

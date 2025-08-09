@@ -37,9 +37,9 @@ const Sidebar = ({ theme, setTheme,loading,setLoading }) => {
         }}
       >
         <div className="flex justify-between items-center  ">
-          <div className="flex">
-          <div className="md:hidden flex justify-between items-center">
-            <button onClick={handleClick} className={` w-12 text-2xl `}>
+          <div className="flex gap-1">
+          <div className="md:hidden flex justify-between items-center ">
+            <button onClick={handleClick} className={`  md:text-2xl `}>
               {toggle ? <IoClose /> : <SlMenu />}
             </button>
           </div>
@@ -130,7 +130,7 @@ const Sidebar = ({ theme, setTheme,loading,setLoading }) => {
           </div>
 
           <ShopsphereLogo
-            className={` font-medium text-2xl md:text-4xl ${
+            className={` font-medium text-lg md:text-2xl md:text-4xl ${
               theme ? "text-white" : "text-gray-800"
             }`}
             links="/dashboard"
@@ -140,7 +140,7 @@ const Sidebar = ({ theme, setTheme,loading,setLoading }) => {
           <div className="flex items-center gap-3 md:gap-10">
             <button
               onClick={handleToggle}
-              className={`text-xl md:text-2xl  rounded focus:outline-none focus:ring transition `}
+              className={` md:text-2xl  rounded focus:outline-none focus:ring transition `}
             >
               {theme ? <CiBrightnessUp /> : <IoMoonOutline />}
             </button>

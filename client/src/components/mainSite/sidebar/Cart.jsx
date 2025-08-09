@@ -81,15 +81,30 @@ const Cart = ({toggleCart, setToggleCart,cartItems,setCartItems}) => {
   }, []);
 
 
+	 useEffect(() => {
+  if (toggleCart) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "";
+  }
+}, [toggleCart]);
+ 
+
+
+
 	  const handleCheckoutClick = () => {
 	  	if(!isLoggedIn){
 	  		// Redirect to login and include redirect param
+	  		setToggleCart(false) //i added this cause when a user clicks "GO TO CHECKOUT", it automatically disables scrolling on the new route cause it is somewhat still active, so this ensure it closes before opening a new route
 	  		navigate('/sign-in?redirect=checkout')
 	  	}else{
 	  		// User already logged in
+	  		setToggleCart(false) //i added this cause when a user clicks "GO TO CHECKOUT", it automatically disables scrolling on the new route cause it is somewhat still active, so this ensure it closes before opening a new route
 	  		navigate('/checkout')
 	  	}
 	  }
+
+	 
 
 
 
@@ -104,7 +119,7 @@ const Cart = ({toggleCart, setToggleCart,cartItems,setCartItems}) => {
 		}`}>
 <div 
 ref={cartRef}
-className={`absolute right-0 top-0  w-3/4  md:w-1/2  lg:w-1/4  h-dvh  bg-slate-200 
+className={`absolute right-0 top-0  w-3/4  md:w-1/2  lg:w-1/4  h-screen  bg-slate-200 
 ${toggleCart ? "translate-x-0" : "translate-x-full  "} 
 transition-transform duration-300 ease-in-out  flex flex-col
  `}>
@@ -163,7 +178,7 @@ className="p-4"
 {
 	activeTab === 'cart' ? (
 	cartItems.length > 0 ?( cartItems.map((item, index) => (
-		<div key={index} className="relative p-4 border-b border-slate-300 flex gap-5">
+		<div key={index} className="relative p-1 border-b border-slate-300 flex gap-3">
 		<div className=" pt-1">
 			<img src={item.image.replace(
                   "/upload/",
@@ -177,7 +192,10 @@ className="p-4"
 
 
 			<div className="font-medium text-xs leading-relaxed">
-			<p className="text-sm headerfont text-black/80 lg:w-45 "> {item.productName}</p>
+			<p className="text-xs headerfont text-black/80 lg:w-40  w-40 break-words whitespace-normal">
+  {item.productName}
+</p>
+
 			<p className="text-slate-400">Size: {item.size}</p>
 			<p className="text-slate-400">Color: {item.color}</p>
 
@@ -202,13 +220,13 @@ className="p-4"
 			</select>
 				</div>
 			<button 
-			className="p-1  absolute right-2 top-4"
+			className="p-1  absolute right-0 top-0"
 			onClick={()=> handleDelete(index)}
 			>
-			<IoMdClose className="text-slate-400 text-2xl p-0"/>
+			<IoMdClose className="text-slate-400 text-xl p-0"/>
 		</button>
 
-		<p className="absolute right-3 bottom-5 headerfont">${(item.price * item.qty).toFixed(2)} USD </p>	
+		<p className="absolute right-0  bottom-3 headerfont">${(item.price * item.qty).toFixed(2)} USD </p>	
 			</div>
 		</div>
 	))
@@ -230,6 +248,7 @@ className="p-4"
 						<Link
 						to={`/track-order/${order.orderNumber}`}
 						className={`text-amber-600 text-base ${order.orderStatus === "delivered" ? "pointer-events-none " : ''} `}
+						onClick={()=> setToggleCart(false)}
 		
 						>
 						Track Order

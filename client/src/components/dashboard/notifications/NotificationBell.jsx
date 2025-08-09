@@ -101,7 +101,7 @@ fetchNotifications()
        onClick={() => setIsOpen(!isOpen)}
         className="relative p-2 rounded-full "
       >
-        <GoBell className="size-5" />
+        <GoBell className="md:size-5" />
         {
           unreadCount > 0 && (
             <span className="absolute top-0 right-0 bg-red-500 text-white text-xs px-1 rounded-full">

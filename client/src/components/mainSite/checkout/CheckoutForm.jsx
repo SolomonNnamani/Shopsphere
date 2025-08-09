@@ -465,7 +465,7 @@ return(
       </p>
 
 {showDetails && (
-  <p className="absolute right-0 -top-60 mt-12 w-64 p-3 bg-gray-800 text-white text-sm rounded shadow-lg">
+  <p className="absolute right-0 lg:left-0 -top-60 lg:-top-40 mt-12 w-64 p-3 bg-gray-800 text-white text-sm rounded shadow-lg">
     <span className="font-semibold block mb-1">Test Card (Demo Only)</span>
     Use the following details to place a <em>test order</em>: <br />
     <strong>Card Number:</strong> 4242 4242 4242 4242 <br />

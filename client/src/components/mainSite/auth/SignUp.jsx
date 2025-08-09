@@ -7,8 +7,10 @@ import { toast } from "react-toastify";
 import "react-phone-input-2/lib/style.css";
 import PhoneInput from "react-phone-input-2";
 import ImageTimer from '../../reuseable/ImageTimer'
+import {fetchPublic} from '../utils/fetchPublic.js'
 
 
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const Register = () => {
   const [formInput, setFormInput] = useState({
@@ -141,7 +143,7 @@ if (error) {
     setIsSubmitting(true);
 
     try {
-      const res = await fetch("http://localhost:5000/auth/sign-up", {
+      const res = await fetchPublic("/auth/sign-up", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -229,7 +231,7 @@ if (error) {
           font-bold flex items-center justify-center bg-[ghostwhite] hover:bg-amber-600 headerLight
            active:scale-95 transition-transform duration-100 "
             onClick={() =>
-              (window.location.href = "http://localhost:5000/auth/google?origin=sign-up")
+              (window.location.href = `${baseUrl}/google?origin=sign-up`)
             }
           >
             <span className="text-blue-500 mr-1">

@@ -3,6 +3,10 @@ import ShopsphereLogo from "../../reuseable/ShopsphereLogo";
 import AnimatedLogo from "../../reuseable/AnimatedLogo";
 import { FaRegEnvelope } from "react-icons/fa";
 import ImageTimer from '../../reuseable/ImageTimer'
+import {fetchPublic} from '../utils/fetchPublic.js'
+
+
+
 
 const ForgotPwd = () => {
   const [email, setEmail] = useState("");
@@ -30,7 +34,7 @@ const ForgotPwd = () => {
 
     setIsSubmitting(true);
     try {
-      const res = await fetch("http://localhost:5000/auth/forgot-password", {
+      const res = await fetchPublic("/auth/forgot-password", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

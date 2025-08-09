@@ -278,7 +278,7 @@ return(
 
 
 {/*fot btn filter and select*/}
-<div className="headerfont text-sm flex items-center gap-3 mb-4 ml-5 md:hidden">
+<div className="headerfont text-sm flex items-center gap-1 md:gap-5 mb-4 md:mb-5 ml-1 md:hidden">
 <button
 className="border border-stone-300 px-2 py-1  rounded  flex items-center gap-1 transition-transform duration-100 active:scale-95"
 onClick={()=> {setToggleFilterBtn(prev => !prev)}}
@@ -552,8 +552,11 @@ className="border rounded border-stone-300 px-2 py-1 outline-none"
       
       {
       	filteredProducts.length > 0 ? ( filteredProducts.map(item => (
-      		<div key={item._id} className=" headerfont   ">
-      		<a href={`/${item.slug}`} >
+      			<div 
+			key={item._id} 
+			className=" headerfont"
+			>
+	<a href={`/${item.slug}`} >
 			<div className="">
 				<img 
 				src={item.mainImage.replace(
@@ -561,19 +564,19 @@ className="border rounded border-stone-300 px-2 py-1 outline-none"
     "/upload/w_1200,q_85,f_auto,dpr_auto/"
   )} 
 				alt={item.productName}
-				className="w-[23pc] h-[25pc] md:w-[23pc] lg:w-20pc object-cover  mx-auto"
+				className="w-full h-72 md:h-96 object-cover mx-auto rounded-tl rounded-tr border-r border-l border-t border-stone-300"
 				 
 				/>
 				</div>
 
-				<div className="px-2 bg-stone-100 border-b border-r border-l border-stone-400 rounded-bl rounded-br" >
-				<p className="text-[12px] font-medium leading-loose ">{item.productName} </p>
-				<p className="font-bold text-sm leading-loose">${item.price}</p>
-				<p className="text-[12px] text-black/70 font-medium leading-loose">Avaliable Colors: {item.color} </p>
+				<div className="px-2 bg-stone-100 border-b border-r border-l border-stone-300 rounded-bl rounded-br h-[5rem]" >
+				<p className="text-[12px] font-medium leading-relaxed ">{item.productName} </p>
+				<p className="font-bold text-sm leading-relaxed md:leading-loose">${item.price}</p>
+				<p className="text-[12px] text-black/70 font-medium leading-relaxed md:leading-loose ">Avaliable Colors: {item.color} </p>
 				</div>
 				</a>
 
-      		</div>
+				</div>
       		))
       		):(
       		<div className="flex items-center justify-center col-span-2 lg:col-span-4 h-dvh  ">

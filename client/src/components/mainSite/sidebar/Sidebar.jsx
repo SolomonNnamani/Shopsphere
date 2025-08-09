@@ -83,12 +83,13 @@ const isLoggedIn = Boolean(localStorage.getItem("sessionToken"))
 	return (
 		<div>
 <div className=" fixed lg:absolute  w-full z-20 bg-[ghostwhite] 
-py-3 lg:py-5 px-5 border-b shadow-sm  border-slate-300"
+py-3 lg:py-5 px-2 md:px-5 border-b shadow-sm  border-slate-300"
 onMouseEnter={()=> setHoveredCategory(categories[0])}
 onMouseLeave={()=> setHoveredCategory(null)}
 >
 
-<div className="flex items-center justify-between" >
+<div className="flex items-center justify-between " >
+	<div className="relative flex gap-3 md:gap-0 items-center w-full lg:hidden"> 
 {/*menu icon*/}
 <button
 data-sidebar-toggle
@@ -96,15 +97,24 @@ onClick={()=>
  setIsOpen((prev)=> !prev ) }
 className="lg:hidden"
 >
-{isOpen ? <IoClose className="text-slate-400 text-xl"/> : <SlMenu className="text-slate-400 text-xl"/>}
+{isOpen ? <IoClose className="text-slate-400 text-lg md:text-xl"/> : <SlMenu className="text-slate-400 text-lg md:text-xl"/>}
 </button>
+
+<div className="md:absolute md:left-1/2 md:-translate-x-1/2">
+	<ShopsphereLogo
+	className="font-medium lg:hidden   text-xl md:text-2xl lg:text-4xl text-slate-800 headerfont"
+	links={"/"}
+/>
+</div>
+</div>
 
 
 <div className=" lg:flex lg:items-center  lg:gap-10">
 <ShopsphereLogo
-	className="font-medium text-2xl lg:text-4xl text-slate-800 headerfont"
+	className="font-medium hidden lg:block text-xl md:text-2xl lg:text-4xl text-slate-800 headerfont"
 	links={"/"}
 />
+
 {/*Contents*/}
 <Mobile setLoading={setLoading}
  isOpen={isOpen} 
@@ -178,23 +188,23 @@ ref={hoverRef}
 
 
 
-<div className="flex items-center gap-1 md:gap-3 ">
+<div className="flex items-center gap-2 md:gap-3 ">
 	{
 		!isLoggedIn ? (
-<a href="/sign-in"> <IoPersonOutline className="text-slate-400 text-2xl"/> </a>
+<a href="/sign-in"> <IoPersonOutline className="text-slate-400 text-xl md:text-2xl"/> </a>
 			):(
-<button onClick={handleLogout}> <MdOutlineLogout className="text-slate-400 text-2xl"/> </button>
+<button onClick={handleLogout}> <MdOutlineLogout className="text-slate-400 text-xl md:text-2xl"/> </button>
 			)
 	}
 
-<a href="/products/category/all"> <IoMdSearch className="text-slate-400 text-2xl"/> </a>
+<a href="/products/category/all"> <IoMdSearch className="text-slate-400 text-xl md:text-2xl"/> </a>
 
 
 <div className="relative flex items-center  p-1">
 <button 
 onClick={()=> setToggleCart((prev) => !prev)}
  >
- <HiOutlineShoppingCart className="text-slate-400 text-3xl mx-auto"/> 
+ <HiOutlineShoppingCart className="text-slate-400 text-xl md:text-2xl mx-auto"/> 
  </button>{cartItems && cartItems.length > 0 &&
 <small className="absolute top-0 right-0 bg-amber-700 rounded-full border-2 border-[ghostwhite] headerfont numberLength">
     {totalQty}

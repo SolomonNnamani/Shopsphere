@@ -5,6 +5,10 @@ import ShopsphereLogo from "../../reuseable/ShopsphereLogo";
 import AnimatedLogo from "../../reuseable/AnimatedLogo";
 import { IoSettingsOutline } from "react-icons/io5";
 import ImageTimer from '../../reuseable/ImageTimer'
+import {fetchPublic} from '../utils/fetchPublic.js'
+
+
+
 
 const resetPwd = () => {
   const [passwordField, setPasswordField] = useState({
@@ -69,7 +73,7 @@ const resetPwd = () => {
     setIsSubmitting(true);
 
     try {
-      const res = await fetch("http://localhost:5000/auth/reset-password", {
+      const res = await fetchPublic("/auth/reset-password", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

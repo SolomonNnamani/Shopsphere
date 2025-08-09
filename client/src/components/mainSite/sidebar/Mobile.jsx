@@ -91,11 +91,21 @@ const Mobile = ({products,setLoading,isOpen,setIsOpen, setError}) => {
 
 	},[isOpen, setIsOpen])
 
+
+  useEffect(() => {
+  if (isOpen) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "";
+  }
+}, [isOpen]);
+
+
 	
 
 	return(
 <>
-<div className={`fixed inset-0 -z-10 bg-black/40 top-[63px] transition-opacity duration-300 ${
+<div className={`fixed inset-0 -z-10 bg-black/40 top-[53px] transition-opacity duration-300 ${
       isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
     } `} >
 <div 
@@ -134,7 +144,7 @@ className={`h-dvh  bg-[ghostwhite] absolute
         .map(p => p.subCategory)
     )].map(subCategory => (
       <div key={subCategory} className="px-10 py-3 mb-[1px]  font-medium text-black/60 text-sm hover:bg-slate-200 focus:bg-slate-300 headerfont ">
-        <a href={`/${subCategory}`} > {subCategory} </a>
+        <a href={`/products/category/${category}?category=${encodeURIComponent(subCategory)}`} > {subCategory} </a>
       </div>
     ))}
     <div className="px-10 py-3 mb-[1px] font-medium text-black/60 text-sm hover:bg-slate-200 focus:bg-slate-300 headerfont">
