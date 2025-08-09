@@ -39,7 +39,8 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 const allowedOrigins =[
-	process.env.FRONTEND_DEV
+	process.env.FRONTEND_DEV,
+  process.env.FRONTEND_PROD
 ];
 
 
