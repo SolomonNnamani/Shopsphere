@@ -1,0 +1,9 @@
+# For both frontend and backend
+**/node_modules/
+.env
+.DS_Store
+logs
+*.log
+.env
+manualReg.js
+manualSnapshot.js
