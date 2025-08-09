@@ -38,16 +38,14 @@ require('./cron/dailySnapshot')
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-const allowedOrigins =[
-	process.env.FRONTEND_DEV,
-  process.env.FRONTEND_PROD
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://shopsphere-online.netlify.app/", // your Netlify site
 ];
-
-
 
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.some(o => o === origin || origin?.startsWith(o))) {
+    if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));
