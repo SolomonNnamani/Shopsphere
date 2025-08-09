@@ -3,7 +3,7 @@ dotenv.config();
 
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
-const googleUrl =  process.env.GOOGLE_CALLBACK_URL_PROD || process.env.GOOGLE_CALLBACK_URL_LOCAL
+const googleUrl =  "https://shopsphere-dm6r.onrender.com" || "http://localhost:5173"
 
 
 const google = (app) => {
@@ -63,7 +63,7 @@ const google = (app) => {
       });
 
         //still in onBoarding stage
-         res.redirect(`${googleUrl}/sign-up?token=${onboardingToken}&type=onboarding`)
+         res.redirect(`http://localhost:5173/sign-up?token=${onboardingToken}&type=onboarding`)
 
 
 
