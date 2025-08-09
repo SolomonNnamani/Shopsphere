@@ -40,11 +40,12 @@ const PORT = process.env.PORT || 5000;
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://shopsphere-online.netlify.app/", // your Netlify site
+  "https://shopsphere-online.netlify.app", // your Netlify site
 ];
 
 app.use(cors({
   origin: function (origin, callback) {
+      console.log("Request Origin:", origin);
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
