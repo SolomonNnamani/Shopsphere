@@ -47,7 +47,7 @@ const allowedOrigins =[
 
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (!origin || allowedOrigins.some(o => o === origin || origin?.startsWith(o))) {
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));
@@ -55,6 +55,7 @@ app.use(cors({
   },
   credentials: true
 }));
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
