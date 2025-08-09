@@ -1,7 +1,10 @@
-const passport = require("passport");
-const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 dotenv.config();
+
+const passport = require("passport");
+const jwt = require("jsonwebtoken");
+const googleUrl =  process.env.GOOGLE_CALLBACK_URL_PROD || process.env.GOOGLE_CALLBACK_URL_LOCAL
+
 
 const google = (app) => {
   //step 1: Start Google login
@@ -43,7 +46,7 @@ const google = (app) => {
         const sessionToken = jwt.sign(sessionPayload, process.env.JWT_SECRET,{
           expiresIn: "2hr"
         })
-         return res.redirect(`http://localhost:5173/sign-in?token=${sessionToken}&type=session`);
+         return res.redirect(`${googleUrl}/sign-in?token=${sessionToken}&type=session`);
 }
 
 
@@ -60,7 +63,7 @@ const google = (app) => {
       });
 
         //still in onBoarding stage
-         res.redirect(`http://localhost:5173/sign-up?token=${onboardingToken}&type=onboarding`)
+         res.redirect(`${googleUrl}/sign-up?token=${onboardingToken}&type=onboarding`)
 
 
 
