@@ -1,6 +1,6 @@
-const passport = require("passport");
 const dotenv = require("dotenv");
 dotenv.config();
+const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const { User } = require("../model/user"); // import your user model
 const createNotification = require("./notificationUtil.js")
@@ -10,9 +10,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: process.env.NODE_ENV === 'production' 
-        ? "https://shopsphere-dm6r.onrender.com/auth/google/callback"
-        : "http://localhost:5000/auth/google/callback",
+       callbackURL: process.env.GOOGLE_CALLBACK_URL,
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
