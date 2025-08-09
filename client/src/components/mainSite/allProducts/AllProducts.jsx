@@ -249,7 +249,7 @@ onClick={()=> {setToggleFilterBtn(prev => !prev)}}
 
 {(toggleFilterBtn || isMediumScreen) && (
 
-<div className="fixed md:sticky w-full md:w-1/3 lg:w-1/4 h-screen z-10 md:z-0 bg-[ghostwhite]  top-0  overflow-y-auto hide-scrollbar-lg pb-15">
+<div className="fixed md:sticky w-full md:w-1/3 py-13 lg:w-1/4 h-screen z-10 md:z-0 bg-[ghostwhite]  top-0  overflow-y-auto hide-scrollbar-lg pb-15">
 
 	{/*header div*/}
      <div className="md:hidden">

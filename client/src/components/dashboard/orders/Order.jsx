@@ -260,8 +260,8 @@ const sumOrder = (items) => {
               </tr>
             </thead>
             <tbody>
-              {currentOrders.length > 0 ? (
-                currentOrders.map((order) => (
+              {currentOrders?.length > 0 ? (
+                currentOrders?.map((order) => (
                   <tr
                     key={order._id}
                     className={` border-y  ${
@@ -475,14 +475,14 @@ const sumOrder = (items) => {
       </div>
 
       <div className="py-4 px-3  leading-loose border-b border-stone-200 headerfont  text-black/80">
-        <p className="font-medium text-black/90">#{selectedOrder.orderNumber}</p> 
+        <p className="font-medium text-black/90">#{selectedOrder?.orderNumber}</p> 
         <p className="text-xs headerfont text-stone-500">Order details </p>
       </div>
 
       <div className="px-3 py-3 border-b border-stone-300 headerfont" >
       <p className="font-medium mb-3"> Items</p>  
            <div className="grid gap-6 md:grid-cols-2 ">
-        {selectedOrder.cartItems.map((item, idx) => (
+        {selectedOrder?.cartItems.map((item, idx) => (
           <div key={idx} className="flex gap-3">
             <img
               src={item.image.replace(
@@ -514,23 +514,23 @@ const sumOrder = (items) => {
 
         <div className="headerfont px-3 border-b border-stone-300 pb-5 w-full overflow-hidden whitespace-normal break-words">
           <div className="grid grid-cols-2 mb-1" ><span className="text-sm font-medium text-stone-700" >Customer name:  </span>   
-            <span className="text-sm font-medium">{selectedOrder.deliveryData.firstname} {selectedOrder.deliveryData.lastname} </span> </div>
+            <span className="text-sm font-medium">{selectedOrder?.deliveryData.firstname} {selectedOrder?.deliveryData.lastname} </span> </div>
           <div className="grid grid-cols-2 mb-1 " ><span className="text-sm font-medium text-stone-700" >Email: </span>  
-           <span className="text-sm font-medium">{selectedOrder.deliveryData.email} </span> </div>
+           <span className="text-sm font-medium">{selectedOrder?.deliveryData.email} </span> </div>
           <div className="grid grid-cols-2 mb-1" ><span className="text-sm font-medium text-stone-700" >Phone: </span>  
-           <span className="text-sm font-medium">{formatInternationalPhone(selectedOrder.deliveryData.telephone)} </span> </div>
+           <span className="text-sm font-medium">{formatInternationalPhone(selectedOrder?.deliveryData.telephone)} </span> </div>
           <div className="grid grid-cols-2 mb-1" ><span className="text-sm font-medium text-stone-700" >Country:  </span>   
-            <span className="text-sm font-medium">{regionNames.of(selectedOrder.deliveryData.country)} </span> </div>
+            <span className="text-sm font-medium">{regionNames.of(selectedOrder?.deliveryData.country)} </span> </div>
           <div className="grid grid-cols-2 mb-1" ><span className="text-sm font-medium text-stone-700" >State: </span>   
-            <span className="text-sm font-medium">{selectedOrder.deliveryData.state} </span> </div>
+            <span className="text-sm font-medium">{selectedOrder?.deliveryData.state} </span> </div>
           <div className="grid grid-cols-2 mb-1" ><span className="text-sm font-medium text-stone-700" >Town/LGA: </span>   
-            <span className="text-sm font-medium">{selectedOrder.deliveryData.lga} </span> </div>
+            <span className="text-sm font-medium">{selectedOrder?.deliveryData.lga} </span> </div>
             <div className="grid grid-cols-2 mb-1" ><span className="text-sm font-medium text-stone-700" >Address </span>   
-            <span className="text-sm font-medium">{selectedOrder.deliveryData.deliveryAddress} </span> </div>
+            <span className="text-sm font-medium">{selectedOrder?.deliveryData.deliveryAddress} </span> </div>
           <div className="grid grid-cols-2 " ><span className="text-sm font-medium text-stone-700" >Postal code: </span>   
-            <span className="text-sm font-medium">{selectedOrder.deliveryData.zipCode} </span> </div>
+            <span className="text-sm font-medium">{selectedOrder?.deliveryData.zipCode} </span> </div>
             <div className="grid grid-cols-2 " ><span className="text-sm font-medium text-stone-700" >Created at: </span>   
-            <span className="text-sm font-medium">{new Date(selectedOrder.updatedAt).toLocaleDateString('en-US',{
+            <span className="text-sm font-medium">{new Date(selectedOrder?.updatedAt).toLocaleDateString('en-US',{
           year:'numeric',
           month:'short',
           day: 'numeric'
@@ -541,18 +541,18 @@ const sumOrder = (items) => {
  <div className="headerfont px-3 border-b border-stone-300 pb-5 ">
           <p className="font-medium mb-3">Billing infomation </p>
           <div className="grid grid-cols-2 mb-1" ><span className="text-sm font-medium text-stone-700" >Billing name:  </span>   
-            <span className="text-sm font-medium">{selectedOrder.billData.firstname || "-"} {selectedOrder.billData.lastname || "-"} </span> </div>
+            <span className="text-sm font-medium">{selectedOrder?.billData.firstname || "-"} {selectedOrder?.billData.lastname || "-"} </span> </div>
         
           <div className="grid grid-cols-2 mb-1" ><span className="text-sm font-medium text-stone-700" >Country:  </span>   
-            <span className="text-sm font-medium">{regionNames.of(selectedOrder.billData.country) || "- -"} </span> </div>
+            <span className="text-sm font-medium">{regionNames.of(selectedOrder?.billData.country) || "- -"} </span> </div>
           <div className="grid grid-cols-2 mb-1" ><span className="text-sm font-medium text-stone-700" >State: </span>   
-            <span className="text-sm font-medium">{selectedOrder.billData.state || "- -"} </span> </div>
+            <span className="text-sm font-medium">{selectedOrder?.billData.state || "- -"} </span> </div>
           <div className="grid grid-cols-2 mb-1" ><span className="text-sm font-medium text-stone-700" >Town/LGA: </span>   
-            <span className="text-sm font-medium">{selectedOrder.billData.lga || "- -"} </span> </div>
+            <span className="text-sm font-medium">{selectedOrder?.billData.lga || "- -"} </span> </div>
             <div className="grid grid-cols-2 mb-1" ><span className="text-sm font-medium text-stone-700" >Billing address: </span>   
-            <span className="text-sm font-medium">{selectedOrder.billData.billingAddress || "- -"} </span> </div>
+            <span className="text-sm font-medium">{selectedOrder?.billData.billingAddress || "- -"} </span> </div>
           <div className="grid grid-cols-2 " ><span className="text-sm font-medium text-stone-700" >Postal code: </span>   
-            <span className="text-sm font-medium">{selectedOrder.billData.zipCode || "- -"} </span> </div>
+            <span className="text-sm font-medium">{selectedOrder?.billData.zipCode || "- -"} </span> </div>
         </div>
 
       
@@ -561,22 +561,22 @@ const sumOrder = (items) => {
           <p className="font-medium mb-3">Shipping information</p>
           
            <div className="grid grid-cols-2 mb-1" ><span className="text-sm font-medium text-stone-700" >Shipping address:  </span>   
-            <span className="text-sm font-medium">{selectedOrder.deliveryData.deliveryAddress}, {selectedOrder.deliveryData.lga}, {selectedOrder.deliveryData.state} 
-             , {regionNames.of(selectedOrder.deliveryData.country)} - {selectedOrder.deliveryData.zipCode} </span> </div>
+            <span className="text-sm font-medium">{selectedOrder?.deliveryData.deliveryAddress}, {selectedOrder?.deliveryData.lga}, {selectedOrder?.deliveryData.state} 
+             , {regionNames.of(selectedOrder?.deliveryData.country)} - {selectedOrder?.deliveryData.zipCode} </span> </div>
 
               <div className="grid grid-cols-2 mb-1" ><span className="text-sm font-medium text-stone-700" >Payment status:</span>   
-            <span className={`text-sm font-medium capitalize ${selectedOrder.paymentStatus === "paid" ? "text-amber-600" : "text-red-600"} `}>{selectedOrder.paymentStatus} </span> </div>
+            <span className={`text-sm font-medium capitalize ${selectedOrder.paymentStatus === "paid" ? "text-amber-600" : "text-red-600"} `}>{selectedOrder?.paymentStatus} </span> </div>
 
             <div className="grid grid-cols-2 mb-1" ><span className="text-sm font-medium text-stone-700" >Order status:</span>   
-            <span className="text-sm font-medium capitalize ">{selectedOrder.orderStatus} </span> </div>
+            <span className="text-sm font-medium capitalize ">{selectedOrder?.orderStatus} </span> </div>
 
             <div className="grid grid-cols-2 mb-1">
   <span className="text-sm font-medium text-stone-700">Subtotal:</span>
-  <span className="text-sm font-medium">${sumOrder(selectedOrder.cartItems)}</span>
+  <span className="text-sm font-medium">${sumOrder(selectedOrder?.cartItems)}</span>
 </div>
 
              <div className="grid grid-cols-2 mb-1" ><span className="text-sm font-medium text-stone-700" >Shipping Fee:</span>   
-            <span className="text-sm font-medium ">${selectedOrder.shippingCost} </span> </div>
+            <span className="text-sm font-medium ">${selectedOrder?.shippingCost} </span> </div>
 
             <div className="grid grid-cols-2 mb-1" ><span className="text-sm font-medium text-stone-700" >Total:</span>   
             <span className="text-sm font-medium capitalize ">${selectedOrder.totalAmount.toFixed(2)}</span> </div>

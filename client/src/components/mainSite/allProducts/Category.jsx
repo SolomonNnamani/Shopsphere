@@ -298,11 +298,11 @@ onClick={()=> {setToggleFilterBtn(prev => !prev)}}
 
 {(toggleFilterBtn || isMediumScreen) && (
 
-<div className="fixed md:sticky w-full md:w-1/3 lg:w-1/4 h-screen z-10 md:z-0 bg-[ghostwhite]  top-0  overflow-y-auto hide-scrollbar-lg pb-15">
+<div className="fixed md:sticky w-full md:w-1/3 pt-13 lg:w-1/4 h-screen z-10 md:z-0 bg-[ghostwhite]  top-0  overflow-y-auto hide-scrollbar-lg pb-15">
 
 	{/*header div*/}
      <div className="md:hidden">
-     <div className="flex items-center justify-between px-5  text-sm py-5 border-b border-stone-300">
+     <div className="flex items-center  justify-between px-5  text-sm py-5 border-b border-stone-300">
      {/*clear all btn*/}
      <button 
      className="  px-2 py-1  rounded text-sm"

@@ -225,7 +225,7 @@ const Profile = ({theme,setLoading}) => {
 
       {/**Hover menu */}
  <div
-  className={`absolute z-20 -left-70 md:-left-90   top-[49px] md:top-[115px]  md:w-96 ${
+  className={`absolute z-20 -left-70 md:-left-90   top-[42px] md:top-[115px]  md:w-96 ${
     toggle ? "block" : "hidden"
   } rounded-2xl p-3 md:p-6 transition-all duration-200 ${
     theme ? "border border-[#3d4b55] bg-[rgb(23,29,33)]" : "bg-white border border-gray-200 shadow-md"
