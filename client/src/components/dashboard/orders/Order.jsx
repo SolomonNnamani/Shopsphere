@@ -104,7 +104,7 @@ const Order = ({ theme, setLoading }) => {
       setIsEditingId(null);
     } else {
       setIsEditingId(order._id);
-      setOrderStatus(orderStatus );
+      setOrderStatus(order.orderStatus );
     }
   };
   const toggleDropDown = (order) => {
@@ -126,11 +126,17 @@ const Order = ({ theme, setLoading }) => {
         : orders.filter((o) => {
             const regex = new RegExp(search, "i");
             return (
-              o.customer.match(regex) ||
+             /* o.customer.match(regex) ||
               o.status.match(regex) ||
               o.country.match(regex) ||
                o.shippingAddress.match(regex)||
-               o.items.some((item) => regex.test(item.product))
+               o.items.some((item) => regex.test(item.product))*/
+              (o.customer ?? "").match(regex) ||
+(o.status ?? "").match(regex) ||
+(o.country ?? "").match(regex) ||
+(o.shippingAddress ?? "").match(regex) ||
+o.items?.some(item => regex.test(item.product ?? ""))
+
             );
           });
     //console.log(filterOrders);
@@ -154,6 +160,16 @@ const Order = ({ theme, setLoading }) => {
 
 //This uses the browser's built-in internationalization API and works for all ISO country codes. It will automatically convert "NG" to "Nigeria", "US" to "United States"
 const regionNames = new Intl.DisplayNames(['en'], {type:'region'});
+
+const safeCountryName = (code) => {
+  try {
+    if (typeof code !== "string" || code.length !== 2) return code || "Unknown";
+    return regionNames.of(code.toUpperCase());
+  } catch {
+    return code || "Unknown";
+  }
+};
+
 
 //for formating country numbers
 function formatInternationalPhone(rawPhone) {
@@ -197,7 +213,9 @@ const handleViewDetails = async(order) => {
     }
 
 // STEP 4: Finally set the order data - this triggers modal content to show
+    
     setSelectedOrder(order)
+
 
   }catch(error){
     console.log('Error opening order details:', error)
@@ -654,7 +672,7 @@ const handleViewDetails = async(order) => {
                 Country:
               </span>   
               <span className={`text-sm font-medium ${theme ? 'text-white' : 'text-black'}`}>
-                {regionNames.of(selectedOrder?.deliveryData.country)}
+                {safeCountryName(selectedOrder?.deliveryData?.country)}
               </span>
             </div>
             <div className="grid grid-cols-2 mb-1">
@@ -722,7 +740,10 @@ const handleViewDetails = async(order) => {
                 Country:
               </span>   
               <span className={`text-sm font-medium ${theme ? 'text-white' : 'text-black'}`}>
-                {regionNames.of(selectedOrder?.billData.country) || "--"}
+                {safeCountryName(selectedOrder?.billData?.country) === "Unknown" 
+                ? "- -"
+                : safeCountryName(selectedOrder?.billData?.country)
+              }
               </span>
             </div>
             <div className="grid grid-cols-2 mb-1">
@@ -730,7 +751,7 @@ const handleViewDetails = async(order) => {
                 State:
               </span>   
               <span className={`text-sm font-medium ${theme ? 'text-white' : 'text-black'}`}>
-                {selectedOrder?.billData.state || "--"}
+                {selectedOrder?.billData.state || "- -"}
               </span>
             </div>
             <div className="grid grid-cols-2 mb-1">
@@ -738,7 +759,7 @@ const handleViewDetails = async(order) => {
                 Town/LGA:
               </span>   
               <span className={`text-sm font-medium ${theme ? 'text-white' : 'text-black'}`}>
-                {selectedOrder?.billData.lga || "--"}
+                {selectedOrder?.billData.lga || "- -"}
               </span>
             </div>
             <div className="grid grid-cols-2 mb-1">
@@ -746,7 +767,7 @@ const handleViewDetails = async(order) => {
                 Billing address:
               </span>   
               <span className={`text-sm font-medium ${theme ? 'text-white' : 'text-black'}`}>
-                {selectedOrder?.billData.billingAddress || "--"}
+                {selectedOrder?.billData.billingAddress || "- -"}
               </span>
             </div>
             <div className="grid grid-cols-2">
@@ -754,7 +775,7 @@ const handleViewDetails = async(order) => {
                 Postal code:
               </span>   
               <span className={`text-sm font-medium ${theme ? 'text-white' : 'text-black'}`}>
-                {selectedOrder?.billData.zipCode || "--"}
+                {selectedOrder?.billData.zipCode || "- -"}
               </span>
             </div>
           </div>
