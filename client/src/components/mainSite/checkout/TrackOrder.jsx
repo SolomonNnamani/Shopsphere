@@ -59,6 +59,15 @@ const isLoggedIn = Boolean(localStorage.getItem("sessionToken"))
 //This uses the browser's built-in internationalization API and works for all ISO country codes. It will automatically convert "NG" to "Nigeria", "US" to "United States"
 const regionNames = new Intl.DisplayNames(['en'], {type:'region'});
 
+const safeCountryName = (code) => {
+  try {
+    if (typeof code !== "string" || code.length !== 2) return code || "Unknown";
+    return regionNames.of(code.toUpperCase());
+  } catch {
+    return code || "Unknown";
+  }
+};
+
 //for date
 const formattedDate = new Date(orderData?.createdAt).toLocaleDateString('en-US');
 
@@ -104,7 +113,7 @@ const formattedDate = new Date(orderData?.createdAt).toLocaleDateString('en-US')
 				{/**SHIP TO*/}
 				<div className="text-center text-xs font-medium"> 
 				<h3>SHIP TO</h3>
-				<p className="text-black/80">{regionNames.of(orderData.deliveryData.country)}</p>
+				<p className="text-black/80">{safeCountryName(orderData?.deliveryData?.country)}</p>
 				</div>
 
 				{/**ORDER*/}
