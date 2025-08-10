@@ -150,6 +150,13 @@ if (existingOrderSnapshot) {
        const yesterdayRevenue = yesterdayRevenueAgg[0]?.totalRevenue || 0;
 
 
+       const hasActivity = todaySales > 0 || todayRevenue >  0
+
+       if(!hasActivity){
+        console.log("No sales/revenue today, skipping snapshot")
+       }
+
+
 
       await OrderStats.create({
         totalOrders,
@@ -193,7 +200,7 @@ const existingUserSnapshot = await UserStats.findOne({
 
 if (existingUserSnapshot) {
   console.log("⛔ Monthly User snapshot already exists.");
- 
+  return
 }
 
 
@@ -246,6 +253,13 @@ if (existingUserSnapshot) {
 
         }
       })
+
+      const hasUserActivity = currentNewCustomers > 0;
+
+      if(!hasActivity){
+        console.log("No new customers this month, skipping user snapshot")
+        return
+      }
       
 
     const snapshot = await UserStats.create({

@@ -148,7 +148,7 @@ className={`h-dvh  bg-[ghostwhite] absolute
       </div>
     ))}
     <div className="px-10 py-3 mb-[1px] font-medium text-black/60 text-sm hover:bg-slate-200 focus:bg-slate-300 headerfont">
-      <a href={`/category/${category}`}>All {category}</a>
+      <a href={`/products/category/${category}`}>All {category}</a>
     </div>
   
       </div>

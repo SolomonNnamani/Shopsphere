@@ -233,7 +233,7 @@ className="p-4"
 	):(
 	<div  className="p-4 text-slate-500  h-full w-full flex flex-col items-center justify-center text-sm">
 		<HiOutlineShoppingCart className="text-6xl"/>
-	<p className="">	You have no items in your shopping cart. </p>
+	<p className="text-center">	You have no items in your shopping cart. </p>
 
 	</div>)
 

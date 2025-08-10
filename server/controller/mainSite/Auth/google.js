@@ -3,7 +3,10 @@ dotenv.config();
 
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
-const googleUrl =  "https://shopsphere-online.netlify.app" || "http://localhost:5173"
+const googleUrl = process.env.NODE_ENV === "production"
+    ? process.env.FRONTEND_PROD
+    : process.env.FRONTEND_DEV;
+
 
 
 const google = (app) => {

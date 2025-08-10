@@ -24,6 +24,7 @@ const Order = ({ theme, setLoading }) => {
   const [search, setSearch] = useState("");
   const [filtered, setFiltered] = useState(orders);
   const [currentPage, setCurrentPage] = useState(1)
+  const [modalLoading, setModalLoading] = useState(false)
 
 
     useEffect(() => {
@@ -169,10 +170,43 @@ function formatInternationalPhone(rawPhone) {
   return `(+${countryCode}) ${formattedLocal.trim()}`;
 }
 
+//sum the order price
 const sumOrder = (items) => {
  return items.reduce((acc,item)=> acc + item.price * item.qty,0).toFixed(2)
 
 }
+
+// Modify your View Details button click handler
+const handleViewDetails = async(order) => {
+  try{
+    // STEP 1: Immediately show loading spinner to give user feedback
+    // This prevents the "nothing happening" feeling when user clicks
+    setModalLoading(true)
+
+        // STEP 2: THE MAGIC 100ms DELAY - This is the key to fixing mobile issues!
+    // WHY THIS WORKS: Gives React time to complete the first render cycle
+    // (showing the loading spinner) before we proceed to the next steps.
+    // Without this, state changes happen too fast and mobile browsers
+    // can't keep up, resulting in white screens.
+
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    //Verify order has required data
+    if(!order || !order._id || !order.cartItems || !order.deliveryData){
+      throw new error('incomplete order data')
+    }
+
+// STEP 4: Finally set the order data - this triggers modal content to show
+    setSelectedOrder(order)
+
+  }catch(error){
+    console.log('Error opening order details:', error)
+    toast.error('Error loading order details');
+  }finally{
+    setModalLoading(false)
+  }
+}
+
 
   return (
     <div className="py-5 px-3 md:px-2 lg:px-30">
@@ -379,7 +413,7 @@ const sumOrder = (items) => {
                     >
                       <button
                         className="text-blue-600 underline hover:text-blue-800 transition "
-                        onClick={() => setSelectedOrder(order)}
+                        onClick={() => handleViewDetails(order)}// Uses our safe handler instead of direct state setting
                       >
                         View Details
                       </button>
@@ -461,129 +495,354 @@ const sumOrder = (items) => {
             </tbody>
           </table>
 
-          {/**Details table */}
-          {selectedOrder && (
-  <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
-    <div className="bg-white  md:px-8  shadow-2xl w-full max-w-3xl text-black overflow-y-auto mx-5 md:mx-0 max-h-[90vh] hide-scrollbar-lg ">
-      <div className="relative">
-        <button
-          onClick={() => setSelectedOrder(null)}
-          className="text-amber-700 hover:text-red-700 font-semibold absolute right-3 top-6"
-        >
-          <IoMdClose className="size-5"/>
-        </button>
+        
+  
+{/**order Details modal */}
+{/**
+ * MODAL CONDITIONAL RENDERING - The Critical Logic
+ * 
+ * CONDITION BREAKDOWN: {(selectedOrder || modalLoading) && (
+ * 
+ * WHY WE USE "OR" (||): 
+ * - selectedOrder: Shows modal when we have order data to display
+ * - modalLoading: Shows modal when we're loading (even if selectedOrder is null)
+ * 
+ * WHY BOTH ARE NEEDED:
+ * Without modalLoading: Modal won't show during loading because selectedOrder is null
+ * Without selectedOrder: Modal won't show after loading completes
+ * 
+ * THE SEQUENCE:
+ * 1. User clicks → modalLoading=true, selectedOrder=null → Modal shows (loading)
+ * 2. After delay → modalLoading=false, selectedOrder=data → Modal shows (content)
+ * 3. User closes → modalLoading=false, selectedOrder=null → Modal hides
+ */}          
+{(selectedOrder || modalLoading) && ( 
+  <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
+    {modalLoading ? (
+      // Loading state
+      <div className={`p-8 rounded-lg shadow-2xl ${
+        theme ? 'bg-[rgb(32,42,49)] text-white' : 'bg-white text-black'
+      }`}>
+        <div className="flex items-center gap-3">
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
+          <span>Loading order details...</span>
+        </div>
       </div>
+    ) : selectedOrder && Object.keys(selectedOrder).length > 0 && selectedOrder.cartItems ? (
+    /**
+       * MAIN CONTENT STATE: Shows when we have valid order data
+       * 
+       * TRIPLE VALIDATION:
+       * 1. selectedOrder exists (not null/undefined)
+       * 2. Object.keys(selectedOrder).length > 0 (not empty object {})
+       * 3. selectedOrder.cartItems exists (has the items we need to display)
+       * 
+       * This prevents rendering a modal with missing/broken data
+       */
+      <div 
+        className={`shadow-2xl w-full max-w-3xl overflow-y-auto mx-auto max-h-[90vh] hide-scrollbar-lg rounded-lg ${
+          theme ? 'bg-[rgb(32,42,49)] text-white' : 'bg-white text-black'
+        }`}
+        style={{
+          background: theme ? "rgb(32, 42, 49)" : "rgb(255, 255, 255)"
+        }}
+      >
+        <div className="relative">
+          <button
+            onClick={() => {
+              setSelectedOrder(null);
+              setModalLoading(false);// Prevents any lingering loading states
+            }}
+            className={`absolute right-3 top-6 z-10 hover:opacity-70 transition-opacity ${
+              theme ? 'text-amber-400 hover:text-red-400' : 'text-amber-700 hover:text-red-700'
+            }`}
+          >
+            <IoMdClose className="size-5"/>
+          </button>
+        </div>
 
-      <div className="py-4 px-3  leading-loose border-b border-stone-200 headerfont  text-black/80">
-        <p className="font-medium text-black/90">#{selectedOrder?.orderNumber}</p> 
-        <p className="text-xs headerfont text-stone-500">Order details </p>
-      </div>
+        <div className={`py-4 px-3 leading-loose border-b headerfont ${
+          theme ? 'border-[#3d4b55] text-white' : 'border-stone-200 text-black'
+        }`}>
+          <p className={`font-medium ${theme ? 'text-white' : 'text-black'}`}>
+            #{selectedOrder?.orderNumber}
+          </p> 
+          <p className={`text-xs headerfont ${theme ? 'text-gray-300' : 'text-stone-500'}`}>
+            Order details
+          </p>
+        </div>
 
-      <div className="px-3 py-3 border-b border-stone-300 headerfont" >
-      <p className="font-medium mb-3"> Items</p>  
-           <div className="grid gap-6 md:grid-cols-2 ">
-        {selectedOrder?.cartItems.map((item, idx) => (
-          <div key={idx} className="flex gap-3">
-            <img
-              src={item.image.replace(
-    "/upload/",
-    "/upload/w_1200,q_85,f_auto,dpr_auto/")}
-              alt={item.productName}
-              className="w-17 h-19 object-cover rounded-xs "
-            />
-            <div>
-<p className="text-xs  font-medium text-black mb-1">{item.productName}</p>
-<p className="text-[11px] grid grid-cols-2 font-medium"><span className="text-stone-700">Color:</span> <span>{item.color} </span></p>
-<p className="text-[11px] grid grid-cols-2 font-medium"><span className="text-stone-700">Size:</span>  <span>{item.size} </span></p>
-<p className="text-[11px] grid grid-cols-2 font-medium"><span className="text-stone-700">Quatity:</span> <span>{item.qty}pcs </span></p>
-<p className="text-[11px] grid grid-cols-2 font-medium"><span className="text-stone-700">Price:</span>  <span> ${item.price}</span></p>
+        <div className={`px-3 py-3 border-b headerfont ${
+          theme ? 'border-[#3d4b55]' : 'border-stone-300'
+        }`}>
+          <p className={`font-medium mb-3 ${theme ? 'text-white' : 'text-black'}`}>
+            Items
+          </p>  
+          <div className="grid gap-6 md:grid-cols-2">
+            {selectedOrder?.cartItems.map((item, idx) => (
+              <div key={idx} className="flex gap-3">
+                <img
+                  src={item.image.replace(
+                    "/upload/",
+                    "/upload/w_1200,q_85,f_auto,dpr_auto/"
+                  )}
+                  alt={item.productName}
+                  className="w-17 h-19 object-cover rounded-xs"
+                />
+                <div>
+                  <p className={`text-xs font-medium mb-1 ${
+                    theme ? 'text-white' : 'text-black'
+                  }`}>
+                    {item.productName}
+                  </p>
+                  <p className={`text-[11px] grid grid-cols-2 font-medium ${
+                    theme ? 'text-gray-300' : 'text-stone-700'
+                  }`}>
+                    <span>Color:</span> <span className={theme ? 'text-white' : 'text-black'}>{item.color}</span>
+                  </p>
+                  <p className={`text-[11px] grid grid-cols-2 font-medium ${
+                    theme ? 'text-gray-300' : 'text-stone-700'
+                  }`}>
+                    <span>Size:</span> <span className={theme ? 'text-white' : 'text-black'}>{item.size}</span>
+                  </p>
+                  <p className={`text-[11px] grid grid-cols-2 font-medium ${
+                    theme ? 'text-gray-300' : 'text-stone-700'
+                  }`}>
+                    <span>Quantity:</span> <span className={theme ? 'text-white' : 'text-black'}>{item.qty}pcs</span>
+                  </p>
+                  <p className={`text-[11px] grid grid-cols-2 font-medium ${
+                    theme ? 'text-gray-300' : 'text-stone-700'
+                  }`}>
+                    <span>Price:</span> <span className={theme ? 'text-white' : 'text-black'}>${item.price}</span>
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
 
+        <div className="py-5 grid gap-6">
+          <div className={`headerfont px-3 border-b pb-5 w-full overflow-hidden whitespace-normal break-words ${
+            theme ? 'border-[#3d4b55]' : 'border-stone-300'
+          }`}>
+            <div className="grid grid-cols-2 mb-1">
+              <span className={`text-sm font-medium ${theme ? 'text-gray-300' : 'text-stone-700'}`}>
+                Customer name:
+              </span>   
+              <span className={`text-sm font-medium ${theme ? 'text-white' : 'text-black'}`}>
+                {selectedOrder?.deliveryData.firstname} {selectedOrder?.deliveryData.lastname}
+              </span>
             </div>
-
-            <div className="hidden md:fle md:flex-row gap-3 md:gap-10 text-sm font-medium  text-stone-700 ">
-              <p><span className="">Size:</span> {item.size}</p>
-              <p><span className="md:hidden">Quatity:</span> {item.qty}pcs</p>
-              <p className="Price"><span className="md:hidden">Price:</span> ${item.price}</p>
+            <div className="grid grid-cols-2 mb-1">
+              <span className={`text-sm font-medium ${theme ? 'text-gray-300' : 'text-stone-700'}`}>
+                Email:
+              </span>  
+              <span className={`text-sm font-medium ${theme ? 'text-white' : 'text-black'}`}>
+                {selectedOrder?.deliveryData.email}
+              </span>
+            </div>
+            <div className="grid grid-cols-2 mb-1">
+              <span className={`text-sm font-medium ${theme ? 'text-gray-300' : 'text-stone-700'}`}>
+                Phone:
+              </span>  
+              <span className={`text-sm font-medium ${theme ? 'text-white' : 'text-black'}`}>
+                {formatInternationalPhone(selectedOrder?.deliveryData.telephone)}
+              </span>
+            </div>
+            <div className="grid grid-cols-2 mb-1">
+              <span className={`text-sm font-medium ${theme ? 'text-gray-300' : 'text-stone-700'}`}>
+                Country:
+              </span>   
+              <span className={`text-sm font-medium ${theme ? 'text-white' : 'text-black'}`}>
+                {regionNames.of(selectedOrder?.deliveryData.country)}
+              </span>
+            </div>
+            <div className="grid grid-cols-2 mb-1">
+              <span className={`text-sm font-medium ${theme ? 'text-gray-300' : 'text-stone-700'}`}>
+                State:
+              </span>   
+              <span className={`text-sm font-medium ${theme ? 'text-white' : 'text-black'}`}>
+                {selectedOrder?.deliveryData.state}
+              </span>
+            </div>
+            <div className="grid grid-cols-2 mb-1">
+              <span className={`text-sm font-medium ${theme ? 'text-gray-300' : 'text-stone-700'}`}>
+                Town/LGA:
+              </span>   
+              <span className={`text-sm font-medium ${theme ? 'text-white' : 'text-black'}`}>
+                {selectedOrder?.deliveryData.lga}
+              </span>
+            </div>
+            <div className="grid grid-cols-2 mb-1">
+              <span className={`text-sm font-medium ${theme ? 'text-gray-300' : 'text-stone-700'}`}>
+                Address:
+              </span>   
+              <span className={`text-sm font-medium ${theme ? 'text-white' : 'text-black'}`}>
+                {selectedOrder?.deliveryData.deliveryAddress}
+              </span>
+            </div>
+            <div className="grid grid-cols-2 mb-1">
+              <span className={`text-sm font-medium ${theme ? 'text-gray-300' : 'text-stone-700'}`}>
+                Postal code:
+              </span>   
+              <span className={`text-sm font-medium ${theme ? 'text-white' : 'text-black'}`}>
+                {selectedOrder?.deliveryData.zipCode}
+              </span>
+            </div>
+            <div className="grid grid-cols-2">
+              <span className={`text-sm font-medium ${theme ? 'text-gray-300' : 'text-stone-700'}`}>
+                Created at:
+              </span>   
+              <span className={`text-sm font-medium ${theme ? 'text-white' : 'text-black'}`}>
+                {new Date(selectedOrder?.updatedAt).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric'
+                })}
+              </span>
             </div>
           </div>
-        ))}
-      </div>
-       </div>
 
-      <div className="py-5 grid  gap-6">
+          <div className={`headerfont px-3 border-b pb-5 ${
+            theme ? 'border-[#3d4b55]' : 'border-stone-300'
+          }`}>
+            <p className={`font-medium mb-3 ${theme ? 'text-white' : 'text-black'}`}>
+              Billing information
+            </p>
+            <div className="grid grid-cols-2 mb-1">
+              <span className={`text-sm font-medium ${theme ? 'text-gray-300' : 'text-stone-700'}`}>
+                Billing name:
+              </span>   
+              <span className={`text-sm font-medium ${theme ? 'text-white' : 'text-black'}`}>
+                {selectedOrder?.billData.firstname || "-"} {selectedOrder?.billData.lastname || "-"}
+              </span>
+            </div>
+            <div className="grid grid-cols-2 mb-1">
+              <span className={`text-sm font-medium ${theme ? 'text-gray-300' : 'text-stone-700'}`}>
+                Country:
+              </span>   
+              <span className={`text-sm font-medium ${theme ? 'text-white' : 'text-black'}`}>
+                {regionNames.of(selectedOrder?.billData.country) || "--"}
+              </span>
+            </div>
+            <div className="grid grid-cols-2 mb-1">
+              <span className={`text-sm font-medium ${theme ? 'text-gray-300' : 'text-stone-700'}`}>
+                State:
+              </span>   
+              <span className={`text-sm font-medium ${theme ? 'text-white' : 'text-black'}`}>
+                {selectedOrder?.billData.state || "--"}
+              </span>
+            </div>
+            <div className="grid grid-cols-2 mb-1">
+              <span className={`text-sm font-medium ${theme ? 'text-gray-300' : 'text-stone-700'}`}>
+                Town/LGA:
+              </span>   
+              <span className={`text-sm font-medium ${theme ? 'text-white' : 'text-black'}`}>
+                {selectedOrder?.billData.lga || "--"}
+              </span>
+            </div>
+            <div className="grid grid-cols-2 mb-1">
+              <span className={`text-sm font-medium ${theme ? 'text-gray-300' : 'text-stone-700'}`}>
+                Billing address:
+              </span>   
+              <span className={`text-sm font-medium ${theme ? 'text-white' : 'text-black'}`}>
+                {selectedOrder?.billData.billingAddress || "--"}
+              </span>
+            </div>
+            <div className="grid grid-cols-2">
+              <span className={`text-sm font-medium ${theme ? 'text-gray-300' : 'text-stone-700'}`}>
+                Postal code:
+              </span>   
+              <span className={`text-sm font-medium ${theme ? 'text-white' : 'text-black'}`}>
+                {selectedOrder?.billData.zipCode || "--"}
+              </span>
+            </div>
+          </div>
 
-        <div className="headerfont px-3 border-b border-stone-300 pb-5 w-full overflow-hidden whitespace-normal break-words">
-          <div className="grid grid-cols-2 mb-1" ><span className="text-sm font-medium text-stone-700" >Customer name:  </span>   
-            <span className="text-sm font-medium">{selectedOrder?.deliveryData.firstname} {selectedOrder?.deliveryData.lastname} </span> </div>
-          <div className="grid grid-cols-2 mb-1 " ><span className="text-sm font-medium text-stone-700" >Email: </span>  
-           <span className="text-sm font-medium">{selectedOrder?.deliveryData.email} </span> </div>
-          <div className="grid grid-cols-2 mb-1" ><span className="text-sm font-medium text-stone-700" >Phone: </span>  
-           <span className="text-sm font-medium">{formatInternationalPhone(selectedOrder?.deliveryData.telephone)} </span> </div>
-          <div className="grid grid-cols-2 mb-1" ><span className="text-sm font-medium text-stone-700" >Country:  </span>   
-            <span className="text-sm font-medium">{regionNames.of(selectedOrder?.deliveryData.country)} </span> </div>
-          <div className="grid grid-cols-2 mb-1" ><span className="text-sm font-medium text-stone-700" >State: </span>   
-            <span className="text-sm font-medium">{selectedOrder?.deliveryData.state} </span> </div>
-          <div className="grid grid-cols-2 mb-1" ><span className="text-sm font-medium text-stone-700" >Town/LGA: </span>   
-            <span className="text-sm font-medium">{selectedOrder?.deliveryData.lga} </span> </div>
-            <div className="grid grid-cols-2 mb-1" ><span className="text-sm font-medium text-stone-700" >Address </span>   
-            <span className="text-sm font-medium">{selectedOrder?.deliveryData.deliveryAddress} </span> </div>
-          <div className="grid grid-cols-2 " ><span className="text-sm font-medium text-stone-700" >Postal code: </span>   
-            <span className="text-sm font-medium">{selectedOrder?.deliveryData.zipCode} </span> </div>
-            <div className="grid grid-cols-2 " ><span className="text-sm font-medium text-stone-700" >Created at: </span>   
-            <span className="text-sm font-medium">{new Date(selectedOrder?.updatedAt).toLocaleDateString('en-US',{
-          year:'numeric',
-          month:'short',
-          day: 'numeric'
-        })} </span> </div>
-        </div>
-
-       
- <div className="headerfont px-3 border-b border-stone-300 pb-5 ">
-          <p className="font-medium mb-3">Billing infomation </p>
-          <div className="grid grid-cols-2 mb-1" ><span className="text-sm font-medium text-stone-700" >Billing name:  </span>   
-            <span className="text-sm font-medium">{selectedOrder?.billData.firstname || "-"} {selectedOrder?.billData.lastname || "-"} </span> </div>
-        
-          <div className="grid grid-cols-2 mb-1" ><span className="text-sm font-medium text-stone-700" >Country:  </span>   
-            <span className="text-sm font-medium">{regionNames.of(selectedOrder?.billData.country) || "- -"} </span> </div>
-          <div className="grid grid-cols-2 mb-1" ><span className="text-sm font-medium text-stone-700" >State: </span>   
-            <span className="text-sm font-medium">{selectedOrder?.billData.state || "- -"} </span> </div>
-          <div className="grid grid-cols-2 mb-1" ><span className="text-sm font-medium text-stone-700" >Town/LGA: </span>   
-            <span className="text-sm font-medium">{selectedOrder?.billData.lga || "- -"} </span> </div>
-            <div className="grid grid-cols-2 mb-1" ><span className="text-sm font-medium text-stone-700" >Billing address: </span>   
-            <span className="text-sm font-medium">{selectedOrder?.billData.billingAddress || "- -"} </span> </div>
-          <div className="grid grid-cols-2 " ><span className="text-sm font-medium text-stone-700" >Postal code: </span>   
-            <span className="text-sm font-medium">{selectedOrder?.billData.zipCode || "- -"} </span> </div>
-        </div>
-
-      
-
-        <div className="headerfont px-3 pb-5">
-          <p className="font-medium mb-3">Shipping information</p>
-          
-           <div className="grid grid-cols-2 mb-1" ><span className="text-sm font-medium text-stone-700" >Shipping address:  </span>   
-            <span className="text-sm font-medium">{selectedOrder?.deliveryData.deliveryAddress}, {selectedOrder?.deliveryData.lga}, {selectedOrder?.deliveryData.state} 
-             , {regionNames.of(selectedOrder?.deliveryData.country)} - {selectedOrder?.deliveryData.zipCode} </span> </div>
-
-              <div className="grid grid-cols-2 mb-1" ><span className="text-sm font-medium text-stone-700" >Payment status:</span>   
-            <span className={`text-sm font-medium capitalize ${selectedOrder.paymentStatus === "paid" ? "text-amber-600" : "text-red-600"} `}>{selectedOrder?.paymentStatus} </span> </div>
-
-            <div className="grid grid-cols-2 mb-1" ><span className="text-sm font-medium text-stone-700" >Order status:</span>   
-            <span className="text-sm font-medium capitalize ">{selectedOrder?.orderStatus} </span> </div>
+          <div className={`headerfont px-3 pb-5`}>
+            <p className={`font-medium mb-3 ${theme ? 'text-white' : 'text-black'}`}>
+              Shipping information
+            </p>
+            
+            <div className="grid grid-cols-2 mb-1">
+              <span className={`text-sm font-medium ${theme ? 'text-gray-300' : 'text-stone-700'}`}>
+                Shipping address:
+              </span>   
+              <span className={`text-sm font-medium ${theme ? 'text-white' : 'text-black'}`}>
+                {selectedOrder?.deliveryData.deliveryAddress}, {selectedOrder?.deliveryData.lga}, {selectedOrder?.deliveryData.state}, {regionNames.of(selectedOrder?.deliveryData.country)} - {selectedOrder?.deliveryData.zipCode}
+              </span>
+            </div>
 
             <div className="grid grid-cols-2 mb-1">
-  <span className="text-sm font-medium text-stone-700">Subtotal:</span>
-  <span className="text-sm font-medium">${sumOrder(selectedOrder?.cartItems)}</span>
-</div>
+              <span className={`text-sm font-medium ${theme ? 'text-gray-300' : 'text-stone-700'}`}>
+                Payment status:
+              </span>   
+              <span className={`text-sm font-medium capitalize ${
+                selectedOrder.paymentStatus === "paid" ? "text-amber-600" : "text-red-600"
+              }`}>
+                {selectedOrder?.paymentStatus}
+              </span>
+            </div>
 
-             <div className="grid grid-cols-2 mb-1" ><span className="text-sm font-medium text-stone-700" >Shipping Fee:</span>   
-            <span className="text-sm font-medium ">${selectedOrder?.shippingCost} </span> </div>
+            <div className="grid grid-cols-2 mb-1">
+              <span className={`text-sm font-medium ${theme ? 'text-gray-300' : 'text-stone-700'}`}>
+                Order status:
+              </span>   
+              <span className={`text-sm font-medium capitalize ${theme ? 'text-white' : 'text-black'}`}>
+                {selectedOrder?.orderStatus}
+              </span>
+            </div>
 
-            <div className="grid grid-cols-2 mb-1" ><span className="text-sm font-medium text-stone-700" >Total:</span>   
-            <span className="text-sm font-medium capitalize ">${selectedOrder.totalAmount.toFixed(2)}</span> </div>
-                
+            <div className="grid grid-cols-2 mb-1">
+              <span className={`text-sm font-medium ${theme ? 'text-gray-300' : 'text-stone-700'}`}>
+                Subtotal:
+              </span>
+              <span className={`text-sm font-medium ${theme ? 'text-white' : 'text-black'}`}>
+                ${sumOrder(selectedOrder?.cartItems)}
+              </span>
+            </div>
+
+            <div className="grid grid-cols-2 mb-1">
+              <span className={`text-sm font-medium ${theme ? 'text-gray-300' : 'text-stone-700'}`}>
+                Shipping Fee:
+              </span>   
+              <span className={`text-sm font-medium ${theme ? 'text-white' : 'text-black'}`}>
+                ${selectedOrder?.shippingCost}
+              </span>
+            </div>
+
+            <div className="grid grid-cols-2 mb-1">
+              <span className={`text-sm font-medium ${theme ? 'text-gray-300' : 'text-stone-700'}`}>
+                Total:
+              </span>   
+              <span className={`text-sm font-medium ${theme ? 'text-white' : 'text-black'}`}>
+                ${selectedOrder?.totalAmount.toFixed(2)}
+              </span>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    ) : (
+      /**
+       * FALLBACK STATE: Shows when outer condition passes but inner conditions fail
+       * 
+       * WHEN THIS HAPPENS:
+       * - modalLoading is false (we're done loading)
+       * - But selectedOrder is invalid/incomplete
+       * - This gives users a way out instead of being stuck
+       */
+      <div className={`p-8 rounded-lg shadow-2xl ${
+        theme ? 'bg-[rgb(32,42,49)] text-white' : 'bg-white text-black'
+      }`}>
+        <p>Unable to load order details. Please try again.</p>
+        <button 
+          onClick={() => setSelectedOrder(null)}
+          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          Close
+        </button>
+      </div>
+    )}
   </div>
 )}
 

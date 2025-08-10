@@ -113,7 +113,7 @@ fetchNotifications()
 
       {isOpen && (
         <div 
-          className="absolute -left-70 top-9 md:right-0 mt-2 md:w-96 bg-white shadow-lg rounded-lg p-4 z-50"
+          className="absolute -left-55 top-9 md:top-[107px] md:-left-68 mt-2 md:w-96 bg-white shadow-lg rounded-lg p-4 z-50"
           ref={dropDownRef}
         >
           <div className="flex justify-between items-center mb-2">

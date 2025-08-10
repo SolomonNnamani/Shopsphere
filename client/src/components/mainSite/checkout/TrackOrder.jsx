@@ -67,10 +67,10 @@ const formattedDate = new Date(orderData?.createdAt).toLocaleDateString('en-US')
 		<div className="  min-h-screen">
 		<div className="bg-slate-100 flex justify-center  py-3 " >
 		<div className="relative">
-			<ShopsphereLogo className="text-3xl font-medium text-slate-800 headerfont"
+			<ShopsphereLogo className=" text-xl md:text-3xl font-medium text-slate-800 headerfont"
                       links={"/"}
       />
-			<small className="font-medium headerfont text-xs absolute -right-16 top-4">TRACKING </small>
+			<small className="font-medium headerfont text-[9px] md:text-xs absolute -right-12 top-3 md:-right-16 md:top-4">TRACKING </small>
 			</div>
 		</div>
 
@@ -272,35 +272,35 @@ const formattedDate = new Date(orderData?.createdAt).toLocaleDateString('en-US')
 
           {/**Shipping information*/}
           <div className="my-10 mx-5 md:mx-10 lg:mx-15 leading-relaxed "> 
-          <h1 className="tracking-widest font-medium">SHIPPING INFORMATION</h1>
+          <h1 className="tracking-widest font-medium  ">SHIPPING INFORMATION</h1>
           {/*Shipping country*/}
-          <div className="flex gap-20">
-          <p className="font-medium text-black/70">Shipping Country:</p>
-           <p className="font-medium text-sm">{regionNames.of(orderData.deliveryData.country)}</p>
+          <div className="grid grid-cols-2 ">
+          <p className="font-medium text-black/70 text-sm md:text-base">Shipping Country</p>
+           <p className="font-medium text-xs  md:text-sm">{regionNames.of(orderData.deliveryData.country)}</p>
             </div>
 
             {/*Shipping State*/}
-          <div className="flex gap-26">
-          <p className="font-medium text-black/70">Shipping State: </p> 
-          <p className="font-medium text-sm">{orderData.deliveryData.state}</p>
+          <div className="grid grid-cols-2">
+          <p className="font-medium text-black/70 text-sm md:text-base">Shipping State: </p> 
+          <p className="font-medium text-xs  md:text-sm">{orderData.deliveryData.state}</p>
            </div>
 
              {/*Shipping Address*/}
-          <div className="flex gap-20">
-          <p className="font-medium text-black/70">Shipping Address:</p> 
-          <p className="font-medium text-sm">{orderData.deliveryData.deliveryAddress}</p> 
+          <div className="grid grid-cols-2">
+          <p className="font-medium text-black/70 text-sm md:text-base">Shipping Address:</p> 
+          <p className="font-medium text-xs  md:text-sm">{orderData.deliveryData.deliveryAddress}</p> 
           </div>
 
           {/*Customer Number*/}
-          <div className="flex gap-18"> 
-          <p className="font-medium text-black/70"> Customer Number: </p> 
-          <p className="font-medium text-sm">+{orderData.deliveryData.telephone}</p>
+          <div className="grid grid-cols-2"> 
+          <p className="font-medium text-black/70 text-sm md:text-base"> Customer Number: </p> 
+          <p className="font-medium text-xs  md:text-sm">+{orderData.deliveryData.telephone}</p>
            </div>
 
            {/**Order Date*/}
-          <div className="flex gap-34"> 
-          <p className="font-medium text-black/70">Order Date: </p>
-          <p className="font-medium text-sm">{formattedDate} </p>
+          <div className="grid grid-cols-2 "> 
+          <p className="font-medium text-black/70 text-sm md:text-base">Order Date: </p>
+          <p className="font-medium text-xs  md:text-sm">{formattedDate} </p>
           </div>
 
           </div>
