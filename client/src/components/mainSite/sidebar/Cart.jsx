@@ -192,7 +192,7 @@ className="p-4"
 
 
 			<div className="font-medium text-xs leading-relaxed">
-			<p className="text-xs headerfont text-black/80 lg:w-40  w-40 break-words whitespace-normal">
+			<p className="text-xs headerfont text-black/80 lg:w-40  w-30 md:w-40 break-words whitespace-normal">
   {item.productName}
 </p>
 
@@ -311,7 +311,7 @@ className="p-4"
 
     {activeTab === 'cart' && cartItems.length > 0 && (
       <div className="bg-[ghostwhite] px-4 py-2 border-t border-slate-300">
-        <div className="flex justify-between headerfont font-medium text-sm">
+        <div className="flex justify-between headerfont font-medium text-xs md:text-sm">
           <p>SUBTOTAL</p>
           <p>${overAllTotal.toFixed(2)} USD</p>
         </div>

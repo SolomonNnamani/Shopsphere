@@ -130,7 +130,7 @@ className="hover:text-amber-700 text-xl ">
 		</div>
 
 
-		<div className="headerfont px-10 border-t border-stone-400 py-5 md:text-center">
+		<div className="headerfont px-10 border-t border-stone-400 text-sm text-center py-5 md:text-center">
 All rights reserved &copy; {year} Shopsphere Ltd
 		</div>
 
