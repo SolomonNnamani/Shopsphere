@@ -6,10 +6,12 @@ import RevenueSvg from "../../reuseable/svg/revenue.svg";
 import CustomersSvg from "../../reuseable/svg/customer.svg";
 import DashboardCharts from "./DashboardCharts";
 import { FaArrowUpLong, FaArrowDownLong } from "react-icons/fa6";
+import {fetchWithAuth} from '../utils/fetchWithAuth.js';
 
 const DashboardStats = ({ 
   theme, 
   orders,
+  setLoading,
   previousCount,
   todaySales,
   yesterdaySales,
@@ -40,7 +42,25 @@ const DashboardStats = ({
     value: "0.0",
     isPositive: true,
   });
+    const [notifications, setNotifications] = useState([]);
+    
 
+
+useEffect(()=> {
+     const fetchNotifications = async() =>{
+    try{
+      const res = await fetchWithAuth("/api/dashboard/notifications");
+      const data = await res.json();
+     
+      setNotifications(data)
+    } catch(err){
+      console.log("Notification fetch error:", err.message);
+    }finally{
+      setLoading(false)
+    }
+  }
+fetchNotifications()
+},[])
    
 
   useEffect(() => {
@@ -128,6 +148,10 @@ calculateSalesStat()
   },[orders,previousCount,todaySales,yesterdaySales,todayRevenue,
     yesterdayRevenue,customers, previousCustomersCount])
 
+
+   const unreadCount = notifications?.filter((n) => !n.isRead).length
+
+
  
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:grid-cols-4  my-5">
@@ -150,7 +174,7 @@ calculateSalesStat()
           </h2>
           <p className="text-sm tracking-wider">
             {" "}
-            You’ve got 2 new notifications waiting for you.
+            You’ve got {unreadCount} new notifications waiting for you.
           </p>
         </div>
         <img src={WelcomeSvg} alt="Welcome" className="w-62 h-62 m-auto" />

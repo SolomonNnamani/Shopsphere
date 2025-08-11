@@ -263,7 +263,7 @@ const StoreInfo = ({ theme, setLoading }) => {
           {/**Store info */}
           <label
             htmlFor="storeName"
-            className={` font-medium ${theme ? "headerDark" : "headerLight"}`}
+            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
           >
             Store name
           </label>
@@ -298,7 +298,7 @@ const StoreInfo = ({ theme, setLoading }) => {
           <div className="flex gap-8 md:gap-30">
             {/**Logo */}
             <div>
-              <label htmlFor="lightLogo">Light Logo Upload</label>
+              <label htmlFor="lightLogo" className="text-sm md:text-base">Light Logo Upload</label>
               <div className="relative w-full">
                 <label
                   htmlFor="lightLogo"
@@ -340,7 +340,7 @@ const StoreInfo = ({ theme, setLoading }) => {
             </div>
 
             <div>
-              <label htmlFor="darkLogo">Dark Logo upload</label>
+              <label htmlFor="darkLogo" className="text-sm md:text-base">Dark Logo upload</label>
               <div className="relative w-full">
                 <label
                   htmlFor="darkLogo"
@@ -387,7 +387,7 @@ const StoreInfo = ({ theme, setLoading }) => {
           {/**Description */}
           <label
             htmlFor="description"
-            className={` font-medium ${theme ? "headerDark" : "headerLight"}`}
+            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
           >
             Description
           </label>
@@ -419,7 +419,7 @@ const StoreInfo = ({ theme, setLoading }) => {
           )}
 
           {/**Support Email */}
-          <label htmlFor="SupportEmail">Support Email</label>
+          <label htmlFor="SupportEmail" className="text-sm md:text-base">Support Email</label>
           <input
             type="email"
             id="SupportEmail"
@@ -448,7 +448,7 @@ const StoreInfo = ({ theme, setLoading }) => {
           )}
 
           {/**Phone*/}
-          <label htmlFor="phone">Phone</label>
+          <label htmlFor="phone" className="text-sm md:text-base">Phone</label>
           <PhoneInput
             country={"us"}
             value={storeInfo.phone || ""}
@@ -481,7 +481,7 @@ const StoreInfo = ({ theme, setLoading }) => {
           )}
 
           {/**Address*/}
-          <label htmlFor="address">Store Address</label>
+          <label htmlFor="address" className="text-sm md:text-base">Store Address</label>
           <input
             type="text"
             id="address"

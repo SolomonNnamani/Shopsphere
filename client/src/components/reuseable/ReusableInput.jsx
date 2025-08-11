@@ -21,7 +21,7 @@ const ReusableInput = ({
   return (
     <div className={`mb-4 ${className}`}>
       {label && (
-        <label htmlFor={name} className={classNameLabel}>
+        <label htmlFor={name} className={`text-sm md:text-base ${classNameLabel}`}>
           {label}
         </label>
       )}

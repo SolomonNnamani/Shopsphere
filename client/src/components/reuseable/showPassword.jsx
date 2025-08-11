@@ -14,7 +14,7 @@ const PasswordInput = ({
   const [showPassword, setShowPassword] = useState(false);
   return (
     <div className="relative">
-        <label htmlFor={name}  className="headerLight" >{label} </label>
+        <label htmlFor={name}  className="headerLight text-sm" >{label} </label>
         <input
         type= { showPassword ? 'text' : 'password'}
         id={name}

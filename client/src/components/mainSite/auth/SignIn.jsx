@@ -179,7 +179,7 @@ const SignIn = () => {
           <form onSubmit={handleSubmit} className="mt-2 relative">
             <label
              htmlFor="email"
-             className="headerLight"
+             className="headerLight text-sm"
              >Email address</label>
             <br />
             <input
@@ -230,14 +230,14 @@ const SignIn = () => {
 
           {/*Google */}
           <button
-            className=" cursor-pointer border border-amber-700 bg-[ghostwhite] mb-5 w-full p-3 rounded
+            className=" cursor-pointer text-sm border border-amber-700 bg-[ghostwhite] mb-5 w-full p-3 rounded
           font-bold flex items-center justify-center mt-5 hover:bg-amber-600 headerLight active:scale-95 transition-transform duration-100 "
             onClick={() =>
               (window.location.href =
                 `${baseUrl}/auth/google?origin=sign-in`)
             }
           >
-           <span className="text-blue-500 mr-1">
+           <span className="text-blue-500 mr-1 ">
              <img 
              src={"https://img.icons8.com/?size=100&id=V5cGWnc9R4xj&format=png&color=000000"}
               alt="google"

@@ -21,7 +21,7 @@ const maintenanceSetting =  require('./controller/dashboard/settings/maintenance
 const profile = require('./controller/dashboard/profile/profile.js')
 const dashboardLogin = require('./controller/dashboard/auth/dashboardLogin.js')
 const dashboardGuest = require('./controller/dashboard/auth/dashboardGuest.js')
-//const manualSnapshot = require('./controller/dashboard/products/manualSnapshot.js');
+const manualSnapshot = require('./controller/dashboard/products/manualSnapshot.js');
 //const manualReg = require('./controller/dashboard/auth/manualReg')
 const fetchOrders = require('./controller/dashboard/orders/fetchOrders.js')
 const fetchCustomers = require('./controller/dashboard/customers/fetchCustomers.js')
@@ -71,7 +71,7 @@ themeSetting(app)
 paymentSetting(app)
 shippingSetting(app)
 maintenanceSetting(app)
-//manualSnapshot(app);
+manualSnapshot(app);
 profile(app)
 dashboardLogin(app)
 dashboardGuest(app)

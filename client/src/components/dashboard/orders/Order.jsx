@@ -281,7 +281,7 @@ const handleViewDetails = async(order) => {
             value={search}
             placeholder=" search customers..."
             onChange={handleSearchChange}
-            className={`searchInput p-2  rounded-lg 
+            className={`w-[12rem] md:w-[15rem] h-[2.4rem] p-2  rounded-lg 
           focus:outline-none focus:ring-2 focus:ring-blue-400 
             ${
               theme ? "placeholder:text-white " : "placeholder:text-slate-300"

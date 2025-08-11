@@ -199,15 +199,6 @@ if (error) {
 
             <ImageTimer/>
 
-
-
-
-
-
-
-
-
-
       <div className="  bg-[rgba(248,248,255,0.5)] md:w-1/2 lg:w-4/12 h-screen overflow-y-auto">
         {/*icon */}
         <div className=" pt-20 md:mb-7  ">
@@ -229,7 +220,7 @@ if (error) {
           <button
             className=" cursor-pointer border border-amber-700 my-5 w-full p-3 rounded
           font-bold flex items-center justify-center bg-[ghostwhite] hover:bg-amber-600 headerLight
-           active:scale-95 transition-transform duration-100 "
+           active:scale-95 transition-transform duration-100 text-sm"
             onClick={() =>
               (window.location.href = `${baseUrl}/google?origin=sign-up`)
             }
@@ -256,7 +247,7 @@ if (error) {
             {/**firstName */}
             <label 
             htmlFor="firstName"
-            className="headerLight"
+            className="headerLight text-sm"
             >First Name </label>
             
             <input
@@ -279,7 +270,7 @@ if (error) {
             {/**lastName */}
             <label 
             htmlFor="lastName"
- className="headerLight"
+ className="headerLight text-sm"
             >Last Name </label>
             
             <input
@@ -299,7 +290,7 @@ if (error) {
             {/**Email */}
             <label 
             htmlFor="email"
-             className="headerLight"
+             className="headerLight text-sm"
             >Email Address</label>
             <br />
             <input
@@ -319,7 +310,7 @@ if (error) {
               {/**Phone*/}
           <label 
           htmlFor="phone"
-           className="headerLight"
+           className="headerLight text-sm"
           >Phone</label>
           <PhoneInput
             country={"us"}

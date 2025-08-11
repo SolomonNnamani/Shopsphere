@@ -37,7 +37,7 @@ const Sidebar = ({ theme, setTheme,loading,setLoading }) => {
         }}
       >
         <div className="flex justify-between items-center  ">
-          <div className="flex gap-1">
+          <div className="flex gap-2">
           <div className="md:hidden flex justify-between items-center ">
             <button onClick={handleClick} className={`  md:text-2xl `}>
               {toggle ? <IoClose /> : <SlMenu />}

@@ -3,7 +3,7 @@ import DashboardStats from "./DashboardStats";
 import {fetchWithAuth} from '../utils/fetchWithAuth.js'
 import {toast} from 'react-toastify'
 
-const Dashboard = ({ theme }) => {
+const Dashboard = ({ theme,setLoading }) => {
   const [orders, setOrders] = useState([ ]);
   const  [previousCount, setPreviousCount] = useState(0)
   const  [todaySales, setTodaySales] = useState(0)
@@ -40,7 +40,7 @@ const Dashboard = ({ theme }) => {
       try {
         const res = await fetchWithAuth('/dashboard/customers'); 
         const data = await res.json();
-        console.log(data.customers)
+      
         setCustomers(data.customers || []);
         setPreviousCustomersCount(data?.previousCustomersCount || 0)
         
@@ -71,6 +71,7 @@ const Dashboard = ({ theme }) => {
       <DashboardStats 
         theme={theme}
          orders={orders} 
+         setLoading={setLoading}
          previousCount = {previousCount}
          todaySales={todaySales}
          yesterdaySales={yesterdaySales}

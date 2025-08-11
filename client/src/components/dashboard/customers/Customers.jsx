@@ -62,7 +62,7 @@ const Customers = ({ theme, setLoading }) => {
   const itemsPerPage = 10; //  Customize how many items per page
   const indexOfLastItem = currentPage * itemsPerPage; //1 * 10 = 10
   const indexOfFirstItem = indexOfLastItem - itemsPerPage; // 10-10 = 0
-  const currentProducts = filtered.slice(
+  const currentCustomers = filtered.slice(
     indexOfFirstItem,
     indexOfLastItem
   ); //slice(0,10)
@@ -132,7 +132,7 @@ function formatInternationalPhone(rawPhone) {
             value={search}
             placeholder=" search customers..."
             onChange={handleChange}
-            className={`searchInput p-2  rounded-lg 
+            className={`w-[12rem] md:w-[15rem] h-[2.4rem] p-2  rounded-lg 
           focus:outline-none focus:ring-2 focus:ring-blue-400 
             ${
               theme ? "placeholder:text-white " : "placeholder:text-slate-300"
@@ -158,8 +158,8 @@ function formatInternationalPhone(rawPhone) {
               </tr>
             </thead>
             <tbody>
-              {filtered.length > 0 ? (
-                filtered.map((user) => {
+              {currentCustomers.length > 0 ? (
+                currentCustomers.map((user) => {
                   const date = new Date(user.createdAt).toLocaleDateString(
                     "en-GB",
                     {

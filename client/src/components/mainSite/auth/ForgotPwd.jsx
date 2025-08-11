@@ -87,7 +87,7 @@ const ForgotPwd = () => {
           <form onSubmit={handleSubmit}>
             <label 
             htmlFor="email"
-             className="headerLight"
+             className="headerLight text-sm"
             >Email address</label>
             <br />
             <input

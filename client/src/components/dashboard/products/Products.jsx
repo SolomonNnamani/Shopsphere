@@ -143,7 +143,7 @@ const Products = ({ theme, loading, setLoading, setError }) => {
               value={search}
               placeholder=" search products..."
               onChange={handleChange}
-              className={`searchInput p-2  rounded-lg 
+              className={` w-[12rem] md:w-[15rem] h-[2.4rem] p-2  rounded-lg 
           focus:outline-none focus:ring-2 focus:ring-blue-400 
             ${
               theme ? "placeholder:text-white " : "placeholder:text-slate-300"

@@ -1,15 +1,20 @@
 const cron = require("node-cron");//bot runs on ur chosen time
 const {Product, ProductStats,Order, OrderStats,User,UserStats} = require("../model/user.js")
 
-cron.schedule("0 0 * * *", async () => {//run every midnight 12am
-	try {
-		// --- Product Stats ---
-		const today = new Date();
+cron.schedule("0 0 * * *", async()=> {
+  try{
+    
+ 
+ //const today = new Date();
+//const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate()); // 2025-08-04T00:00:00.000Z
+//const endOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59, 999); // 2025-08-04T23:59:59.999Z
+    // --- Product Stats ---
+    const today = new Date();
 const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate()); // 2025-08-04T00:00:00.000Z
 const endOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59, 999); // 2025-08-04T23:59:59.999Z
 
 const existingProductSnapshot = await ProductStats.findOne({
-  createdAt: { $gte: startOfToday, $lte: endOfToday },
+  snapshotDate: { $gte: startOfToday, $lte: endOfToday },
 });
 
 if (existingProductSnapshot) {
@@ -18,24 +23,24 @@ if (existingProductSnapshot) {
 }else{
 
 
-		const totalProducts = await Product.countDocuments();
-		const active = await Product.countDocuments({ status: "active" });
-		const lowStock = await Product.countDocuments({ status: "low-stock" });
-		const outOfStock = await Product.countDocuments({ status: "out-of-stock" });
+    const totalProducts = await Product.countDocuments();
+    const active = await Product.countDocuments({ status: "active" });
+    const lowStock = await Product.countDocuments({ status: "low-stock" });
+    const outOfStock = await Product.countDocuments({ status: "out-of-stock" });
 
-		await ProductStats.create({
-			total: totalProducts,
-			active,
-			lowStock,
-			outOfStock,
-		});
-		console.log("✅ Daily Product snapshot saved.");
-
+    await ProductStats.create({
+      total: totalProducts,
+      active,
+      lowStock,
+      outOfStock,
+    });
+    console.log("✅ Daily Product snapshot saved.");
 }
 
 
-const existingOrderSnapshot = await OrderStats.findOne({
-  createdAt: { $gte: startOfToday, $lte: endOfToday },
+
+  const existingOrderSnapshot = await OrderStats.findOne({
+  snapshotDate: { $gte: startOfToday, $lte: endOfToday },
 });
 
 if (existingOrderSnapshot) {
@@ -43,13 +48,13 @@ if (existingOrderSnapshot) {
   
 }else{
 
-			const totalOrders = await Order.countDocuments();
-		const delivered = await Order.countDocuments({ orderStatus: "delivered" });
-		const pending = await Order.countDocuments({ orderStatus: "pending" });
-		const processing = await Order.countDocuments({ orderStatus: "processing" });
-		const cancelled = await Order.countDocuments({ orderStatus: "cancelled" });
+      const totalOrders = await Order.countDocuments();
+    const delivered = await Order.countDocuments({ orderStatus: "delivered" });
+    const pending = await Order.countDocuments({ orderStatus: "pending" });
+    const processing = await Order.countDocuments({ orderStatus: "processing" });
+    const cancelled = await Order.countDocuments({ orderStatus: "cancelled" });
 
-		 //-----Calculating total sales------
+     //-----Calculating total sales------
        const now = new Date();
 
        // === STEP 1: Calculate today's start and end ===     //-----Calculating total sales------
@@ -154,6 +159,7 @@ if (existingOrderSnapshot) {
 
        if(!hasActivity){
         console.log("No sales/revenue today, skipping snapshot")
+        return;
        }
 
 
@@ -169,15 +175,24 @@ if (existingOrderSnapshot) {
         todayRevenue,
         yesterdayRevenue
       })
-		console.log("✅ Daily Order snapshot saved.");
-}
-		
+    console.log("✅ Daily Order snapshot saved.");
+}//*/
+    
 
-	} catch (error) {
-		console.error("❌ Snapshot cron job error:", error);
-	}
-
+  } catch (error) {
+    console.error("Snapshot cron job error:", error);
+  }
 })
+
+
+
+
+
+
+
+
+
+
 
 
 // 🗓 Monthly CRON: User Stats (1st of each month at midnight)
@@ -195,7 +210,7 @@ const monthEnd = new Date(
   );
 
 const existingUserSnapshot = await UserStats.findOne({
-  createdAt: { $gte: monthStart, $lte: monthEnd },
+  snapshotDate: { $gte: monthStart, $lte: monthEnd },
 });
 
 if (existingUserSnapshot) {

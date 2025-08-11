@@ -68,12 +68,12 @@ button{
 }
 .sidebarMenuDark{
   background-color: rgb(32, 42, 49);
-  top:8.5%;
+  top:8.3%;
 
 }
 .sidebarMenuLight{
   background-color: rgb(245, 243, 243);
-  top:8.5%;
+  top:8.3%;
 
 }
 .headerLight{
@@ -83,11 +83,7 @@ button{
 .headerDark{
   color:#E0E0E0;
 }
-.searchInput{
-  width:15pc;
-  height:2.4pc;
- /* background-color: transparent;*/
-}
+
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }

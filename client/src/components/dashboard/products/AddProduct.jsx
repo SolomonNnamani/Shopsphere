@@ -495,7 +495,7 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
 
   return (
     <div
-      className={`fixed top-[65px] left-0 z-20 md:top-[129px] w-full overflow-y-auto bg-white pb-10  px-3 md:px-2 lg:px-30
+      className={`fixed top-[54px] left-0 z-20 md:top-[129px] w-full overflow-y-auto bg-white pb-10  px-3 md:px-2 lg:px-30
      ${
        visible ? "visible" : "hidden"
      } h-[calc(100dvh-65px)] md:h-[calc(100vh-129px)] `}
@@ -508,7 +508,7 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
           {/**Product Name */}
           <label
             htmlFor="productName"
-            className={` font-medium ${theme ? "headerDark" : "headerLight"}`}
+            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
           >
             Product Name
           </label>
@@ -540,7 +540,7 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
           >
           <label
             htmlFor="category"
-            className={` font-medium ${theme ? "headerDark" : "headerLight"}`}
+            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
           >
             Category
           </label>
@@ -582,7 +582,7 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
           >
           <label
             htmlFor="subCategory"
-            className={` font-medium ${theme ? "headerDark" : "headerLight"}`}
+            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
           >
             Sub-Category
           </label>
@@ -621,7 +621,7 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
           {/**Price  */}
           <label
             htmlFor="price"
-            className={` font-medium ${theme ? "headerDark" : "headerLight"}`}
+            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
           >
             Price (dollar)
           </label>
@@ -649,7 +649,7 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
           {/**Stock Quatity */}
           <label
             htmlFor="stkQuantity"
-            className={` font-medium ${theme ? "headerDark" : "headerLight"}`}
+            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
           >
             Stock Quantity
           </label>
@@ -681,7 +681,7 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
               {/**color */}
           <label
             htmlFor="color"
-            className={` font-medium ${theme ? "headerDark" : "headerLight"}`}
+            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
           >
             Color
           </label>
@@ -712,7 +712,7 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
            {/**size options */}
           <label
             htmlFor="size"
-            className={` font-medium ${theme ? "headerDark" : "headerLight"}`}
+            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
           >
             Product Size
           </label>
@@ -743,7 +743,7 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
             {/**Price  */}
           <label
             htmlFor="weight"
-            className={` font-medium ${theme ? "headerDark" : "headerLight"}`}
+            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
           >
             Weight
           </label>
@@ -772,7 +772,7 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
            {/**material */}
           <label
             htmlFor="material"
-            className={` font-medium ${theme ? "headerDark" : "headerLight"}`}
+            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
           >
             Material <span className="text-xs font-light">(optional)</span>
           </label>
@@ -803,7 +803,7 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
              {/**style */}
           <label
             htmlFor="style"
-            className={` font-medium ${theme ? "headerDark" : "headerLight"}`}
+            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
           >
             Product Style <span className="text-xs font-light">(optional)</span>
           </label>
@@ -835,7 +835,7 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
            {/**fitType */}
           <label
             htmlFor="fitType"
-            className={` font-medium ${theme ? "headerDark" : "headerLight"}`}
+            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
           >
             Fit Type <span className="text-xs font-light">(optional)</span>
           </label>
@@ -866,7 +866,7 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
            {/**Gender */}
           <label
             htmlFor="gender"
-            className={` font-medium ${theme ? "headerDark" : "headerLight"}`}
+            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
           >
             Gender
           </label>
@@ -896,7 +896,7 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
            {/**brand */}
           <label
             htmlFor="brand"
-            className={` font-medium ${theme ? "headerDark" : "headerLight"}`}
+            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
           >
             Product Brand <span className="text-xs font-light">(optional)</span>
           </label>
@@ -927,7 +927,7 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
              {/**Stock keeping unit(sku) */}
           <label
             htmlFor="sku"
-            className={` font-medium ${theme ? "headerDark" : "headerLight"}`}
+            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
           >
             Stock keeping unit  <span className="text-xs font-light">(SKU)</span>
           </label>
@@ -957,7 +957,7 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
            {/**slug(slug) */}
           <label
             htmlFor="slug"
-            className={` font-medium ${theme ? "headerDark" : "headerLight"}`}
+            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
           >
             Slug  
           </label>
@@ -990,7 +990,7 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
               {/**Display image upload */}
               <label
                 htmlFor="mainImage"
-                className={` font-medium ${
+                className={` font-medium text-sm md:text-base ${
                   theme ? "headerDark" : "headerLight"
                 }`}
               >
@@ -1002,7 +1002,7 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
               <div className="relative w-full">
                 <label
                   htmlFor="mainImage"
-                  className={`inline-block cursor-pointer w-40 text-center px-4 py-2 rounded-lg text-sm font-medium ${theme ? "text-white": "text-black"}
+                  className={` inline-block cursor-pointer w-40 text-center px-4 py-2 rounded-lg text-sm font-medium ${theme ? "text-white": "text-black"}
     border border-yellow-600 bg-transperant hover:bg-yellow-600 hover:text-white active:scale-95 transition-transform duration-100`}
                 >
                   Choose image
@@ -1087,7 +1087,7 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
           {/**description */}
           <label
             htmlFor="description"
-            className={` font-medium ${theme ? "headerDark" : "headerLight"}`}
+            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
           >
             Product Description
           </label>
@@ -1117,7 +1117,7 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
              {/**Tags */}
           <label
             htmlFor="tags"
-            className={` font-medium ${theme ? "headerDark" : "headerLight"}`}
+            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
           >
             Tags  <span className="text-xs font-light">(comma-separated)</span>
           </label>
