@@ -441,14 +441,14 @@ onClick={()=> {setToggleFilterBtn(prev => !prev)}}>
 <div className="relative w-full">
 <div className="absolute -top-12 right-0 flex items-center gap-2 headerfont ">
 <p className="hidden md:block text-sm">{filteredProducts.length} items </p>
-<label className="!flex items-center gap-2 !font-normal text-sm !my-1 headerfont ">
+<label className="!flex items-center gap-2 !font-normal text-sm  !my-1 headerfont ">
 <input
 type="text"
 name="search"
 value={search}
 placeholder="search products..."
 onChange={(e)=> {setSearch(e.target.value)} }
-className="border rounded border-stone-300 px-2 py-1 outline-none"
+className="border rounded border-stone-300 max-w-[9rem] md:max-w-[35rem] px-2 py-1 outline-none"
 />
  <FaSearch className="size-5 text-black/70 " />
 </label>
@@ -456,7 +456,7 @@ className="border rounded border-stone-300 px-2 py-1 outline-none"
 </div>
 
 {/*product card*/}
-      <div className=" grid grid-cols-2 lg:grid-cols-4 gap-1  w-full ">
+      <div className=" grid grid-cols-2 lg:grid-cols-4 gap-2 mx-2  w-full ">
       
       {
       	filteredProducts.length > 0 ? ( filteredProducts.map(item => (
@@ -477,10 +477,10 @@ className="border rounded border-stone-300 px-2 py-1 outline-none"
 				/>
 				</div>
 
-				<div className="px-2 bg-stone-100 border-b border-r border-l border-stone-300 rounded-bl rounded-br h-[5rem]" >
-				<p className="text-[12px] font-medium leading-relaxed ">{item.productName} </p>
-				<p className="font-bold text-sm leading-relaxed">${item.price}</p>
-				<p className="text-[12px] text-black/70 font-medium leading-relaxed">Avaliable Colors: {item.color} </p>
+				<div className="px-2 bg-stone-100 border-b border-r border-l border-stone-300 rounded-bl rounded-br space-y-1 h-[5.5rem] md:h-[4.5rem]" >
+				<p className="text-[12px] font-medium  ">{item.productName} </p>
+				<p className="font-bold text-sm ">${item.price}</p>
+				<p className="text-[12px] text-black/70 font-medium ">Avaliable Colors: {item.color} </p>
 				</div>
 				</a>
 
