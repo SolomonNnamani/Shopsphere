@@ -2,57 +2,52 @@ import React, { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import AnimatedLogo from "../../reuseable/AnimatedLogo";
 import { RiArrowDropDownLine } from "react-icons/ri";
-import {fetchWithAuth} from '../utils/fetchWithAuth.js'
+import { fetchWithAuth } from "../utils/fetchWithAuth.js";
 
 const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
   const [formProd, setFormProd] = useState({
     productName: "",
     category: "",
-    subCategory:"",
+    subCategory: "",
     price: "",
     stkQuantity: "",
-     status: "",
-     color:"",
-    size:"",
-    weight:"",
-    material:"",
-    style:"",
-    fitType:"",
+    status: "",
+    color: "",
+    size: "",
+    weight: "",
+    material: "",
+    style: "",
+    fitType: "",
     gender: "",
-    brand:"",
-    sku:"",
-    slug:"",
+    brand: "",
+    sku: "",
+    slug: "",
     mainImage: null,
     galleryImages: [],
     description: "",
-    tags:[]
-   
-
-
+    tags: [],
   });
   const [error, setError] = useState({
     productName: "",
     category: "",
-    subCategory:"",
+    subCategory: "",
     price: "",
     stkQuantity: "",
-     status: "",
-     color:"",
-    size:"",
-    weight:"",
-    material:"",
-    style:"",
-    fitType:"",
+    status: "",
+    color: "",
+    size: "",
+    weight: "",
+    material: "",
+    style: "",
+    fitType: "",
     gender: "",
-    brand:"",
-    sku:"",
-     slug:"",
+    brand: "",
+    sku: "",
+    slug: "",
     mainImage: "",
     galleryImages: "",
     description: "",
-    tags:""
-  
-
+    tags: "",
   });
   const [preview, setPreview] = useState({
     mainImage: null,
@@ -94,13 +89,13 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
       subCategory,
       price,
       stkQuantity,
-       status,
-       color,
-    size,
-    weight,
-    gender,
-    sku,
-    slug,
+      status,
+      color,
+      size,
+      weight,
+      gender,
+      sku,
+      slug,
       mainImage,
       galleryImages,
       description,
@@ -109,19 +104,19 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
     const errors = {
       productName: "",
       category: "",
-      subCategory:"",
+      subCategory: "",
       price: "",
       stkQuantity: "",
-       status: "",
-       color:"",
-    size:"",
-    gender: "",
-    sku:"",
-    slug:"",
+      status: "",
+      color: "",
+      size: "",
+      gender: "",
+      sku: "",
+      slug: "",
       mainImage: "",
       galleryImages: "",
       description: "",
-      tags:"",
+      tags: "",
     };
     let isValid = true;
     //productName
@@ -134,7 +129,7 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
       errors.category = "Please select a category.";
       isValid = false;
     }
-     //subCategory
+    //subCategory
     if (!subCategory) {
       errors.subCategory = "Please select a subCategory.";
       isValid = false;
@@ -159,19 +154,19 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
       errors.stkQuantity = "please type in a valid number";
       isValid = false;
     }
-      //color
+    //color
     if (color.trim() === "") {
       errors.color = "Product color is required";
       isValid = false;
     }
 
-     //size
+    //size
     if (size.trim() === "") {
       errors.size = "Product size  is required";
       isValid = false;
     }
 
-     //weight
+    //weight
     if (!weight) {
       errors.weight = "Product weight is required";
       isValid = false;
@@ -180,19 +175,19 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
       isValid = false;
     }
 
-     //gender
+    //gender
     if (gender.trim() === "") {
       errors.gender = "Product's gender is required";
       isValid = false;
     }
 
-      //sku
+    //sku
     if (sku.trim() === "") {
       errors.sku = "Please input product sku!";
       isValid = false;
     }
 
-     //slug
+    //slug
     if (!slug) {
       errors.slug = "Slug must not be empty.";
       isValid = false;
@@ -211,14 +206,14 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
 
     //description
     if (!description) {
-      console.log("description")
+      console.log("description");
       errors.description = "Description cannot be empty";
       isValid = false;
     }
 
-     //tags
+    //tags
     if (tags.length === 0) {
-      console.log("tags")
+      console.log("tags");
       errors.tags = "Please select tags for this product.";
       isValid = false;
     }
@@ -244,79 +239,75 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
 
     const role = localStorage.getItem("role");
 
-    if(role !== "admin"){
-      toast.error("You must be an admin to perform this action!")
-      return
-    }else{
+    if (role !== "admin") {
+      toast.error("You must be an admin to perform this action!");
+      return;
+    } else {
+      const isValid = validationForm();
+      if (!isValid) return;
+      setLoading(true);
+      const {
+        productName,
+        category,
+        subCategory,
+        price,
+        status,
+        stkQuantity,
+        color,
+        size,
+        weight,
+        material,
+        style,
+        fitType,
+        gender,
+        brand,
+        sku,
+        slug,
+        mainImage,
+        galleryImages,
+        description,
+        tags,
+        createdAt,
+        lastUpdated,
+      } = formProd;
 
-    const isValid = validationForm();
-    if (!isValid) return;
-    setLoading(true);
-    const {
-      productName,
-      category,
-      subCategory,
-      price,
-       status,
-      stkQuantity,
-      color,
-       size,
-       weight,
-    material,
-    style,
-    fitType,
-    gender,
-    brand,
-    sku,
-    slug,
-      mainImage,
-      galleryImages,
-      description,
-      tags,
-      createdAt,
-      lastUpdated,
-    } = formProd;
+      try {
+        //Upload main image to Cloudinary
+        const mainForm = new FormData();
+        mainForm.append("file", mainImage);
+        mainForm.append("upload_preset", "shopSphere_upload");
 
-    try {
-      //Upload main image to Cloudinary
-      const mainForm = new FormData();
-      mainForm.append("file", mainImage);
-      mainForm.append("upload_preset", "shopSphere_upload");
-
-      const mainRes = await fetch(
-        "https://api.cloudinary.com/v1_1/diwn1spcp/image/upload",
-        {
-          method: "POST",
-          body: mainForm,
-        }
-      );
-
-      const mainData = await mainRes.json();
-      const mainImageUrl = mainData.secure_url;
-
-      //upload gallery images
-      const galleryImageUrls = [];
-      for (const image of galleryImages) {
-        const galleryForm = new FormData();
-        galleryForm.append("file", image);
-        galleryForm.append("upload_preset", "shopSphere_upload");
-
-        const galleryRes = await fetch(
+        const mainRes = await fetch(
           "https://api.cloudinary.com/v1_1/diwn1spcp/image/upload",
           {
             method: "POST",
-            body: galleryForm,
+            body: mainForm,
           }
         );
-        const galleryData = await galleryRes.json();
-        galleryImageUrls.push(galleryData.secure_url);
-      }
-     
 
-      //Send everything to backend
-      const res = await fetchWithAuth(
-        "/api/dashboard/product/addproduct",
-        {
+        const mainData = await mainRes.json();
+        const mainImageUrl = mainData.secure_url;
+
+        //upload gallery images
+        const galleryImageUrls = [];
+        for (const image of galleryImages) {
+          const galleryForm = new FormData();
+          galleryForm.append("file", image);
+          galleryForm.append("upload_preset", "shopSphere_upload");
+
+          const galleryRes = await fetch(
+            "https://api.cloudinary.com/v1_1/diwn1spcp/image/upload",
+            {
+              method: "POST",
+              body: galleryForm,
+            }
+          );
+          const galleryData = await galleryRes.json();
+          galleryImageUrls.push(galleryData.secure_url);
+        }
+
+        //Send everything to backend
+        const res = await fetchWithAuth("/api/dashboard/product/addproduct", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -328,64 +319,63 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
             price,
             stkQuantity,
             color,
-             size,
-             weight,
-             material,
-             style,
-             fitType,
-             gender,
-             brand,
-             sku,
-             slug,
+            size,
+            weight,
+            material,
+            style,
+            fitType,
+            gender,
+            brand,
+            sku,
+            slug,
             mainImage: mainImageUrl,
             galleryImages: galleryImageUrls,
             description,
             tags,
             status,
           }),
+        });
+        const data = await res.json();
+        if (data.message) {
+          toast.success("New product added successfully");
         }
-      );
-      const data = await res.json();
-      if (data.message) {
-        toast.success("New product added successfully");
-      }
-      setFormProd((prev) => ({
-        ...prev,
-        productName: "",
-        category: "",
-        subCategory:"",
-        price: "",
-        stkQuantity: "",
-        color:"",
-        size:"",
-        weight:"",
-    material:"",
-    style:"",
-    fitType:"",
-    gender: "",
-    brand:"",
-    sku:"",
-    slug:"",
-        mainImage: null,
-        galleryImages: [],
-        description: "",
-        tags:[]
-      }));
-      setPreview({
-        mainImage: null,
-        galleryImages: [],
-      }); //*/
+        setFormProd((prev) => ({
+          ...prev,
+          productName: "",
+          category: "",
+          subCategory: "",
+          price: "",
+          stkQuantity: "",
+          color: "",
+          size: "",
+          weight: "",
+          material: "",
+          style: "",
+          fitType: "",
+          gender: "",
+          brand: "",
+          sku: "",
+          slug: "",
+          mainImage: null,
+          galleryImages: [],
+          description: "",
+          tags: [],
+        }));
+        setPreview({
+          mainImage: null,
+          galleryImages: [],
+        }); //*/
 
-      // Reset file inputs manually
-      if (mainImageRef.current) mainImageRef.current.value = "";
-      if (galleryImagesRef.current) galleryImagesRef.current.value = "";
-    } catch (error) {
-      console.log("Upload error", error);
-      toast.error("Something went wrong during upload, please try again.");
-    } finally {
-      setLoading(false);
+        // Reset file inputs manually
+        if (mainImageRef.current) mainImageRef.current.value = "";
+        if (galleryImagesRef.current) galleryImagesRef.current.value = "";
+      } catch (error) {
+        console.log("Upload error", error);
+        toast.error("Something went wrong during upload, please try again.");
+      } finally {
+        setLoading(false);
+      }
     }
-  }
   };
 
   useEffect(() => {
@@ -395,23 +385,23 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
           ...prev,
           productName: "",
           category: "",
-          subCategory:"",
+          subCategory: "",
           price: "",
           stkQuantity: "",
-          color:"",
-          size:"",
-          weight:"",
-    material:"",
-    style:"",
-    fitType:"",
-    gender: "",
-    brand:"",
-    sku:"",
-    slug:"",
+          color: "",
+          size: "",
+          weight: "",
+          material: "",
+          style: "",
+          fitType: "",
+          gender: "",
+          brand: "",
+          sku: "",
+          slug: "",
           mainImage: null,
           galleryImages: [],
           description: "",
-          tags:[]
+          tags: [],
         }));
 
         setPreview({
@@ -442,56 +432,69 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
     };
   }, [visible]);
 
-
-//for subCategory
+  //for subCategory
 
   //  This section handles dynamic sub-category filtering based on selected category
-// `subCategoryMap` defines which sub-categories belong to which main categories
-// For example: Clothing => ["Suits & Jackets", "Shirts", "Trousers"]
+  // `subCategoryMap` defines which sub-categories belong to which main categories
+  // For example: Clothing => ["Suits & Jackets", "Shirts", "Trousers"]
   const subCategoryMap = {
-    "Suits & Jackets": ["Formal suit", "Tailored suit", "Wedding suit", "Jackets", "Business suit"],
-    Shirts:["Long sleeve shirts", "Short sleeve shirts", "Striped shirts",],
-    Trousers:["Formal Trousers", "Tailored Trousers", "Chinos trousers"],
+    "Suits & Jackets": [
+      "Formal suit",
+      "Tailored suit",
+      "Wedding suit",
+      "Jackets",
+      "Business suit",
+    ],
+    Shirts: ["Long sleeve shirts", "Short sleeve shirts", "Striped shirts"],
+    Trousers: ["Formal Trousers", "Tailored Trousers", "Chinos trousers"],
     Shoes: ["Loafer shoes", "Oxford Shoes", "Leather Shoes"],
-    Bags:["Leather Bags", "Slings & Crossbody Bags", "Work Bags", "Duffel Bags"],
-    Watches:[ "Gold watches", "Silver watches", ],
-    Accessories:["Wallets", "Bracelets", "Bowties"],
-  }
+    Bags: [
+      "Leather Bags",
+      "Slings & Crossbody Bags",
+      "Work Bags",
+      "Duffel Bags",
+    ],
+    Watches: ["Gold watches", "Silver watches"],
+    Accessories: ["Wallets", "Bracelets", "Bowties"],
+  };
 
-// This function returns sub-categories to display in the dropdown.
-// If no category is selected, it returns ALL sub-categories by flattening the map.
-// If a category is selected, it returns only the matching sub-categories.
+  // This function returns sub-categories to display in the dropdown.
+  // If no category is selected, it returns ALL sub-categories by flattening the map.
+  // If a category is selected, it returns only the matching sub-categories.
   const getFilteredSubcategories = () => {
-    if(!formProd.category){
+    if (!formProd.category) {
       //No category selected, return all sub-categories
-      return Object.values(subCategoryMap).flat();  // Flattens [["a"], ["b", "c"]] => ["a", "b", "c"]
+      return Object.values(subCategoryMap).flat(); // Flattens [["a"], ["b", "c"]] => ["a", "b", "c"]
     }
     // Category selected: return its sub-categories or an empty array if invalid
-    return subCategoryMap[formProd.category] || []
-  }
+    return subCategoryMap[formProd.category] || [];
+  };
 
   //for slug
   // 🔽 Slug generator: creates a clean URL-friendly string based on product name
-// - Lowercases everything
-// - Removes special characters
-// - Replaces spaces with dashes
-// - Collapses multiple dashes into one
+  // - Lowercases everything
+  // - Removes special characters
+  // - Replaces spaces with dashes
+  // - Collapses multiple dashes into one
   const generateSlug = (name) => {
-    return name.toLowerCase().trim().replace(/[^a-z0-9\s-]/g, "")// remove special chars
-     .replace(/\s+/g, "-") // spaces to dashes
-    .replace(/-+/g, "-"); // collapse multiple dashes
-  }
+    return name
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9\s-]/g, "") // remove special chars
+      .replace(/\s+/g, "-") // spaces to dashes
+      .replace(/-+/g, "-"); // collapse multiple dashes
+  };
 
-// 🔁 Whenever productName changes, this useEffect runs and updates the slug in the form state.
-// `prev` holds the previous form state so we don't accidentally erase anything else.
-  useEffect(()=> {
-    if(formProd.productName){
-      setFormProd((prev)=> ({
+  // 🔁 Whenever productName changes, this useEffect runs and updates the slug in the form state.
+  // `prev` holds the previous form state so we don't accidentally erase anything else.
+  useEffect(() => {
+    if (formProd.productName) {
+      setFormProd((prev) => ({
         ...prev, // Keep the rest of the form data intact
-        slug:generateSlug(prev.productName) // Generate and set the new slug
-      }))
+        slug: generateSlug(prev.productName), // Generate and set the new slug
+      }));
     }
-  },[formProd.productName])
+  }, [formProd.productName]);
 
   return (
     <div
@@ -508,7 +511,9 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
           {/**Product Name */}
           <label
             htmlFor="productName"
-            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
+            className={` font-medium text-sm md:text-base ${
+              theme ? "headerDark" : "headerLight"
+            }`}
           >
             Product Name
           </label>
@@ -522,7 +527,9 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
             className={`p-2  rounded-lg 
           focus:outline-none focus:ring-2 focus:ring-blue-400 
             ${
-              theme ? "placeholder:text-white text-white" : "placeholder:text-slate-300 text-black"
+              theme
+                ? "placeholder:text-white text-white"
+                : "placeholder:text-slate-300 text-black"
             }  `}
             style={{
               background: `${
@@ -536,82 +543,81 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
           )}
 
           {/**Category */}
-          <div className="relative"
-          >
-          <label
-            htmlFor="category"
-            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
-          >
-            Category
-          </label>
+          <div className="relative">
+            <label
+              htmlFor="category"
+              className={` font-medium text-sm md:text-base ${
+                theme ? "headerDark" : "headerLight"
+              }`}
+            >
+              Category
+            </label>
 
-          <select
-            id="category"
-            name="category"
-            value={formProd.category}
-            onChange={handleChange}
-            className={`p-2 rounded-lg w-full
+            <select
+              id="category"
+              name="category"
+              value={formProd.category}
+              onChange={handleChange}
+              className={`p-2 rounded-lg w-full
     focus:outline-none focus:ring-2 focus:ring-blue-400 appearance-none bg-no-repeat pr-10
     ${theme ? "text-white" : "text-black"}
     ${theme ? "bg-[rgb(23,29,33)]" : "bg-[rgba(128,128,128,0.3)]"}
   `}
-          >
-            <option value="">- Select a category -</option>
-<option value="Suits & Jackets">Suits & Jackets</option>
-<option value="Shirts">Shirts</option>
-<option value="Trousers">Trousers</option>
-<option value="Shoes">Shoes</option>
-<option value="Bags">Bags</option>
-<option value="Watches">Watches</option>
-<option value="Accessories">Accessories</option>
-
-
-          </select>
-          <div  className="pointer-events-none absolute top-12 right-3 flex items-center">
-<RiArrowDropDownLine className="text-3xl" />
-           </div>
-
+            >
+              <option value="">- Select a category -</option>
+              <option value="Suits & Jackets">Suits & Jackets</option>
+              <option value="Shirts">Shirts</option>
+              <option value="Trousers">Trousers</option>
+              <option value="Shoes">Shoes</option>
+              <option value="Bags">Bags</option>
+              <option value="Watches">Watches</option>
+              <option value="Accessories">Accessories</option>
+            </select>
+            <div className="pointer-events-none absolute top-12 right-3 flex items-center">
+              <RiArrowDropDownLine className="text-3xl" />
+            </div>
           </div>
 
           {error.category && (
             <p className="text-red-500 text-xs">{error.category}</p>
           )}
 
-           {/**subCategory */}
-           <div className="relative"
-          >
-          <label
-            htmlFor="subCategory"
-            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
-          >
-            Sub-Category
-          </label>
-          <select
-            id="subCategory"
-            name="subCategory"
-            value={formProd.subCategory}
-            onChange={handleChange}
-            disabled={!formProd.category}
-            className={`p-2 rounded-lg w-full
+          {/**subCategory */}
+          <div className="relative">
+            <label
+              htmlFor="subCategory"
+              className={` font-medium text-sm md:text-base ${
+                theme ? "headerDark" : "headerLight"
+              }`}
+            >
+              Sub-Category
+            </label>
+            <select
+              id="subCategory"
+              name="subCategory"
+              value={formProd.subCategory}
+              onChange={handleChange}
+              disabled={!formProd.category}
+              className={`p-2 rounded-lg w-full
     focus:outline-none focus:ring-2 focus:ring-blue-400 appearance-none bg-no-repeat pr-10
-    ${theme ? "text-white bg-[rgb(23,29,33)]" : "text-black bg-[rgba(128,128,128,0.3)]"}
+    ${
+      theme
+        ? "text-white bg-[rgb(23,29,33)]"
+        : "text-black bg-[rgba(128,128,128,0.3)]"
+    }
     disabled:bg-slate-700 disabled:text-slate-400 disabled:cursor-not-allowed disabled:opacity-70
   `}
-          >
-            <option value="">-Select sub-category-</option>
-              {
-                  getFilteredSubcategories().map((subitems, index)=> (
-                    <option key={index} value={subitems}>
-                    {subitems}
-                    </option>
-                    ))
-
-              }
-          </select>
-           <div  className="pointer-events-none absolute top-12 right-3 flex items-center">
-<RiArrowDropDownLine className="text-3xl" />
-           </div>
-
+            >
+              <option value="">-Select sub-category-</option>
+              {getFilteredSubcategories().map((subitems, index) => (
+                <option key={index} value={subitems}>
+                  {subitems}
+                </option>
+              ))}
+            </select>
+            <div className="pointer-events-none absolute top-12 right-3 flex items-center">
+              <RiArrowDropDownLine className="text-3xl" />
+            </div>
           </div>
 
           {error.subCategory && (
@@ -621,7 +627,9 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
           {/**Price  */}
           <label
             htmlFor="price"
-            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
+            className={` font-medium text-sm md:text-base ${
+              theme ? "headerDark" : "headerLight"
+            }`}
           >
             Price (dollar)
           </label>
@@ -635,8 +643,10 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
             className={`p-2  rounded-lg 
           focus:outline-none focus:ring-2 focus:ring-blue-400 appearance-none
              ${
-              theme ? "placeholder:text-white text-white" : "placeholder:text-slate-300 text-black"
-            }  `}
+               theme
+                 ? "placeholder:text-white text-white"
+                 : "placeholder:text-slate-300 text-black"
+             }  `}
             style={{
               background: `${
                 theme ? "rgb(23, 29, 33)" : "rgba(128,128,128,0.3) "
@@ -649,7 +659,9 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
           {/**Stock Quatity */}
           <label
             htmlFor="stkQuantity"
-            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
+            className={` font-medium text-sm md:text-base ${
+              theme ? "headerDark" : "headerLight"
+            }`}
           >
             Stock Quantity
           </label>
@@ -665,8 +677,10 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
             className={`p-2  rounded-lg 
           focus:outline-none focus:ring-2 focus:ring-blue-400 
              ${
-              theme ? "placeholder:text-white text-white" : "placeholder:text-slate-300 text-black"
-            }  `}
+               theme
+                 ? "placeholder:text-white text-white"
+                 : "placeholder:text-slate-300 text-black"
+             }  `}
             style={{
               background: `${
                 theme ? "rgb(23, 29, 33)" : "rgba(128,128,128,0.3) "
@@ -678,10 +692,12 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
             <p className="text-red-500 text-xs">{error.stkQuantity}</p>
           )}
 
-              {/**color */}
+          {/**color */}
           <label
             htmlFor="color"
-            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
+            className={` font-medium text-sm md:text-base ${
+              theme ? "headerDark" : "headerLight"
+            }`}
           >
             Color
           </label>
@@ -695,8 +711,10 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
             className={`p-2  rounded-lg 
           focus:outline-none focus:ring-2 focus:ring-blue-400 
              ${
-              theme ? "placeholder:text-white text-white" : "placeholder:text-slate-300 text-black"
-            }  `}
+               theme
+                 ? "placeholder:text-white text-white"
+                 : "placeholder:text-slate-300 text-black"
+             }  `}
             style={{
               background: `${
                 theme ? "rgb(23, 29, 33)" : "rgba(128,128,128,0.3) "
@@ -704,15 +722,14 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
             }}
           />
 
-          {error.color && (
-            <p className="text-red-500 text-xs">{error.color}</p>
-          )}
+          {error.color && <p className="text-red-500 text-xs">{error.color}</p>}
 
-
-           {/**size options */}
+          {/**size options */}
           <label
             htmlFor="size"
-            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
+            className={` font-medium text-sm md:text-base ${
+              theme ? "headerDark" : "headerLight"
+            }`}
           >
             Product Size
           </label>
@@ -726,7 +743,9 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
             className={`p-2  rounded-lg 
           focus:outline-none focus:ring-2 focus:ring-blue-400 
             ${
-              theme ? "placeholder:text-white text-white" : "placeholder:text-slate-300 text-black"
+              theme
+                ? "placeholder:text-white text-white"
+                : "placeholder:text-slate-300 text-black"
             }  `}
             style={{
               background: `${
@@ -735,15 +754,14 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
             }}
           />
 
-          {error.size && (
-            <p className="text-red-500 text-xs">{error.size}</p>
-          )}
+          {error.size && <p className="text-red-500 text-xs">{error.size}</p>}
 
-
-            {/**Price  */}
+          {/**Price  */}
           <label
             htmlFor="weight"
-            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
+            className={` font-medium text-sm md:text-base ${
+              theme ? "headerDark" : "headerLight"
+            }`}
           >
             Weight
           </label>
@@ -757,8 +775,10 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
             className={`p-2  rounded-lg 
           focus:outline-none focus:ring-2 focus:ring-blue-400 appearance-none
              ${
-              theme ? "placeholder:text-white text-white" : "placeholder:text-slate-300 text-black"
-            }  `}
+               theme
+                 ? "placeholder:text-white text-white"
+                 : "placeholder:text-slate-300 text-black"
+             }  `}
             style={{
               background: `${
                 theme ? "rgb(23, 29, 33)" : "rgba(128,128,128,0.3) "
@@ -766,13 +786,16 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
             }}
           />
 
-          {error.weight && <p className="text-red-500 text-xs">{error.weight}</p>}
+          {error.weight && (
+            <p className="text-red-500 text-xs">{error.weight}</p>
+          )}
 
-
-           {/**material */}
+          {/**material */}
           <label
             htmlFor="material"
-            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
+            className={` font-medium text-sm md:text-base ${
+              theme ? "headerDark" : "headerLight"
+            }`}
           >
             Material <span className="text-xs font-light">(optional)</span>
           </label>
@@ -786,8 +809,10 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
             className={`p-2  rounded-lg 
           focus:outline-none focus:ring-2 focus:ring-blue-400 
              ${
-              theme ? "placeholder:text-white text-white" : "placeholder:text-slate-300 text-black"
-            }  `}
+               theme
+                 ? "placeholder:text-white text-white"
+                 : "placeholder:text-slate-300 text-black"
+             }  `}
             style={{
               background: `${
                 theme ? "rgb(23, 29, 33)" : "rgba(128,128,128,0.3) "
@@ -798,12 +823,13 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
           {error.material && (
             <p className="text-red-500 text-xs">{error.material}</p>
           )}
-          
 
-             {/**style */}
+          {/**style */}
           <label
             htmlFor="style"
-            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
+            className={` font-medium text-sm md:text-base ${
+              theme ? "headerDark" : "headerLight"
+            }`}
           >
             Product Style <span className="text-xs font-light">(optional)</span>
           </label>
@@ -817,8 +843,10 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
             className={`p-2  rounded-lg 
           focus:outline-none focus:ring-2 focus:ring-blue-400 
              ${
-              theme ? "placeholder:text-white text-white" : "placeholder:text-slate-300 text-black"
-            }  `}
+               theme
+                 ? "placeholder:text-white text-white"
+                 : "placeholder:text-slate-300 text-black"
+             }  `}
             style={{
               background: `${
                 theme ? "rgb(23, 29, 33)" : "rgba(128,128,128,0.3) "
@@ -826,16 +854,14 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
             }}
           />
 
-          {error.style && (
-            <p className="text-red-500 text-xs">{error.style}</p>
-          )}
-          
+          {error.style && <p className="text-red-500 text-xs">{error.style}</p>}
 
-
-           {/**fitType */}
+          {/**fitType */}
           <label
             htmlFor="fitType"
-            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
+            className={` font-medium text-sm md:text-base ${
+              theme ? "headerDark" : "headerLight"
+            }`}
           >
             Fit Type <span className="text-xs font-light">(optional)</span>
           </label>
@@ -849,8 +875,10 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
             className={`p-2  rounded-lg 
           focus:outline-none focus:ring-2 focus:ring-blue-400 
              ${
-              theme ? "placeholder:text-white text-white" : "placeholder:text-slate-300 text-black"
-            }  `}
+               theme
+                 ? "placeholder:text-white text-white"
+                 : "placeholder:text-slate-300 text-black"
+             }  `}
             style={{
               background: `${
                 theme ? "rgb(23, 29, 33)" : "rgba(128,128,128,0.3) "
@@ -861,12 +889,13 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
           {error.fitType && (
             <p className="text-red-500 text-xs">{error.fitType}</p>
           )}
-          
 
-           {/**Gender */}
+          {/**Gender */}
           <label
             htmlFor="gender"
-            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
+            className={` font-medium text-sm md:text-base ${
+              theme ? "headerDark" : "headerLight"
+            }`}
           >
             Gender
           </label>
@@ -875,13 +904,15 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
             id="gender"
             name="gender"
             value={formProd.gender}
-            placeholder= "Men, Unisex, etc."
+            placeholder="Men, Unisex, etc."
             onChange={handleChange}
             className={`p-2  rounded-lg 
           focus:outline-none focus:ring-2 focus:ring-blue-400 
              ${
-              theme ? "placeholder:text-white text-white" : "placeholder:text-slate-300 text-black"
-            }  `}
+               theme
+                 ? "placeholder:text-white text-white"
+                 : "placeholder:text-slate-300 text-black"
+             }  `}
             style={{
               background: `${
                 theme ? "rgb(23, 29, 33)" : "rgba(128,128,128,0.3) "
@@ -893,10 +924,12 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
             <p className="text-red-500 text-xs">{error.gender}</p>
           )}
 
-           {/**brand */}
+          {/**brand */}
           <label
             htmlFor="brand"
-            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
+            className={` font-medium text-sm md:text-base ${
+              theme ? "headerDark" : "headerLight"
+            }`}
           >
             Product Brand <span className="text-xs font-light">(optional)</span>
           </label>
@@ -910,7 +943,9 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
             className={`p-2  rounded-lg 
           focus:outline-none focus:ring-2 focus:ring-blue-400 
             ${
-              theme ? "placeholder:text-white text-white" : "placeholder:text-slate-300 text-black"
+              theme
+                ? "placeholder:text-white text-white"
+                : "placeholder:text-slate-300 text-black"
             }  `}
             style={{
               background: `${
@@ -919,17 +954,16 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
             }}
           />
 
-          {error.brand && (
-            <p className="text-red-500 text-xs">{error.brand}</p>
-          )}
-    
+          {error.brand && <p className="text-red-500 text-xs">{error.brand}</p>}
 
-             {/**Stock keeping unit(sku) */}
+          {/**Stock keeping unit(sku) */}
           <label
             htmlFor="sku"
-            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
+            className={` font-medium text-sm md:text-base ${
+              theme ? "headerDark" : "headerLight"
+            }`}
           >
-            Stock keeping unit  <span className="text-xs font-light">(SKU)</span>
+            Stock keeping unit <span className="text-xs font-light">(SKU)</span>
           </label>
           <input
             type="text"
@@ -941,7 +975,9 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
             className={`p-2  rounded-lg 
           focus:outline-none focus:ring-2 focus:ring-blue-400 
             ${
-              theme ? "placeholder:text-white text-white" : "placeholder:text-slate-300 text-black"
+              theme
+                ? "placeholder:text-white text-white"
+                : "placeholder:text-slate-300 text-black"
             }  `}
             style={{
               background: `${
@@ -950,16 +986,16 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
             }}
           />
 
-          {error.sku && (
-            <p className="text-red-500 text-xs">{error.sku}</p>
-          )}
+          {error.sku && <p className="text-red-500 text-xs">{error.sku}</p>}
 
-           {/**slug(slug) */}
+          {/**slug(slug) */}
           <label
             htmlFor="slug"
-            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
+            className={` font-medium text-sm md:text-base ${
+              theme ? "headerDark" : "headerLight"
+            }`}
           >
-            Slug  
+            Slug
           </label>
           <input
             type="text"
@@ -971,7 +1007,9 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
             className={`p-2  rounded-lg 
           focus:outline-none focus:ring-2 focus:ring-blue-400 
             ${
-              theme ? "placeholder:text-white text-white" : "placeholder:text-slate-300 text-black"
+              theme
+                ? "placeholder:text-white text-white"
+                : "placeholder:text-slate-300 text-black"
             }  `}
             style={{
               background: `${
@@ -980,10 +1018,7 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
             }}
           />
 
-          {error.slug && (
-            <p className="text-red-500 text-xs">{error.slug}</p>
-          )}
-
+          {error.slug && <p className="text-red-500 text-xs">{error.slug}</p>}
 
           <div className="lg:flex lg:gap-40">
             <div>
@@ -1002,7 +1037,9 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
               <div className="relative w-full">
                 <label
                   htmlFor="mainImage"
-                  className={` inline-block cursor-pointer w-40 text-center px-4 py-2 rounded-lg text-sm font-medium ${theme ? "text-white": "text-black"}
+                  className={` inline-block cursor-pointer w-40 text-center px-4 py-2 rounded-lg text-sm font-medium ${
+                    theme ? "text-white" : "text-black"
+                  }
     border border-yellow-600 bg-transperant hover:bg-yellow-600 hover:text-white active:scale-95 transition-transform duration-100`}
                 >
                   Choose image
@@ -1048,7 +1085,9 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
               <div className="relative w-full ">
                 <label
                   htmlFor="galleryImages"
-                  className={`inline-block cursor-pointer w-40 text-center px-4 py-2 rounded-lg text-sm font-medium ${theme ? "text-white": "text-black"}
+                  className={`inline-block cursor-pointer w-40 text-center px-4 py-2 rounded-lg text-sm font-medium ${
+                    theme ? "text-white" : "text-black"
+                  }
     border border-orange-400 bg-transperant hover:bg-orange-500 hover:text-white active:scale-95 transition-transform duration-100`}
                 >
                   Choose Images
@@ -1087,7 +1126,9 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
           {/**description */}
           <label
             htmlFor="description"
-            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
+            className={` font-medium text-sm md:text-base ${
+              theme ? "headerDark" : "headerLight"
+            }`}
           >
             Product Description
           </label>
@@ -1102,8 +1143,8 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
             onChange={handleChange}
             className={`p-2 mt-1 rounded-lg w-full resize-none
     focus:outline-none focus:ring-2 focus:ring-blue-400  ${
-              theme ? " text-white" : "placeholder:text-slate-500 text-black"
-            }
+      theme ? " text-white" : "placeholder:text-slate-500 text-black"
+    }
     `}
             style={{
               background: theme ? "rgb(23, 29, 33)" : "rgba(128,128,128,0.3)",
@@ -1114,12 +1155,14 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
             <p className="text-red-500 text-xs">{error.description}</p>
           )}
 
-             {/**Tags */}
+          {/**Tags */}
           <label
             htmlFor="tags"
-            className={` font-medium text-sm md:text-base ${theme ? "headerDark" : "headerLight"}`}
+            className={` font-medium text-sm md:text-base ${
+              theme ? "headerDark" : "headerLight"
+            }`}
           >
-            Tags  <span className="text-xs font-light">(comma-separated)</span>
+            Tags <span className="text-xs font-light">(comma-separated)</span>
           </label>
           <input
             type="text"
@@ -1128,15 +1171,17 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
             value={formProd.tags}
             placeholder="e.g. fashion, formal, men"
             onChange={(e) =>
-          setFormProd({
-            ...formProd,
-            tags: e.target.value.split(",").map((c) => c.trim()),
-          })
-        }
+              setFormProd({
+                ...formProd,
+                tags: e.target.value.split(",").map((c) => c.trim()),
+              })
+            }
             className={`p-2  rounded-lg 
           focus:outline-none focus:ring-2 focus:ring-blue-400 
             ${
-              theme ? "placeholder:text-white text-white" : "placeholder:text-slate-300 text-black"
+              theme
+                ? "placeholder:text-white text-white"
+                : "placeholder:text-slate-300 text-black"
             }  `}
             style={{
               background: `${
@@ -1145,9 +1190,7 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
             }}
           />
 
-          {error.tags && (
-            <p className="text-red-500 text-xs">{error.tags}</p>
-          )}
+          {error.tags && <p className="text-red-500 text-xs">{error.tags}</p>}
 
           <div>
             <button
@@ -1164,7 +1207,7 @@ const AddProduct = ({ theme, visible, handleToggle, loading, setLoading }) => {
           onClick={handleToggle}
           className={` px-4 py-3 rounded-lg text-sm font-medium  bg-transperant
             hover:bg-amber-600 active:scale-95 transition-transform border border-yellow-600
-             duration-100 mt-5 w-full ${theme ? "text-white": "text-black"}
+             duration-100 mt-5 w-full ${theme ? "text-white" : "text-black"}
 
        ${visible ? "visible" : "hidden"}`}
         >

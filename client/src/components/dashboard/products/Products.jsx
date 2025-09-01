@@ -4,22 +4,19 @@ import ProductRow from "./ProductRow";
 import StockReport from "./StockReport";
 import { FaSearch } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
-import {fetchWithAuth} from '../utils/fetchWithAuth.js';
+import { fetchWithAuth } from "../utils/fetchWithAuth.js";
 import Pagination from "../../reuseable/Pagination";
 
 const Products = ({ theme, loading, setLoading, setError }) => {
   const [visible, setVisible] = useState(false);
   const [search, setSearch] = useState("");
-  const [product, setProduct] = useState([
-
-    ]);
+  const [product, setProduct] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState(product);
   const [previousCount, setPreviousCount] = useState(0);
   const [previousActiveCount, setPreviousActiveCount] = useState(0);
   const [previousLowStockCount, setPreviousLowStockCount] = useState(0);
   const [previousOutOfStockCount, setPreviousOutOfStockCount] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1)
-  
+  const [currentPage, setCurrentPage] = useState(1);
 
   //GET request
   useEffect(() => {
@@ -27,22 +24,20 @@ const Products = ({ theme, loading, setLoading, setError }) => {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetchWithAuth(
-          "/api/dashboard/products"
-        );
+        const res = await fetchWithAuth("/api/dashboard/products");
         if (!res) return;
         const data = await res.json();
 
-       // setProduct(data.products);
-      
-        const normalizedProducts = data?.products.map((p)=> ({
+        // setProduct(data.products);
+
+        const normalizedProducts = data?.products.map((p) => ({
           ...p,
           weight: p.weight || "",
           //slugs:p.slugs || "",
           //tags:Array.isArray(p.tags) ? p.tags : []
-        }))
-        
-          setProduct(normalizedProducts || [])
+        }));
+
+        setProduct(normalizedProducts || []);
         setPreviousCount(data?.previousCount || 0);
         setPreviousActiveCount(data?.previousActiveCount || 0);
         setPreviousLowStockCount(data?.previousLowStockCount || 0);
@@ -59,13 +54,13 @@ const Products = ({ theme, loading, setLoading, setError }) => {
 
   const handleChange = (e) => {
     setSearch(e.target.value);
-    setCurrentPage(1)
+    setCurrentPage(1);
   };
 
   useEffect(() => {
     const filtered = product.filter((item) => {
       return (
-         item.sku.toLowerCase().match(search.toLowerCase()) ||
+        item.sku.toLowerCase().match(search.toLowerCase()) ||
         item.productName.toLowerCase().match(search.toLowerCase()) ||
         item.category.toLowerCase().match(search.toLowerCase()) ||
         item.status.toLowerCase().match(search.toLowerCase()) ||
@@ -89,7 +84,6 @@ const Products = ({ theme, loading, setLoading, setError }) => {
     indexOfLastItem
   ); //slice(0,10)
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage); //Math.ceil(15/10) = 2 paginated pages
-  
 
   return (
     <div className="py-5 px-3 md:px-2 lg:px-30">
@@ -162,7 +156,8 @@ const Products = ({ theme, loading, setLoading, setError }) => {
             className="bg-amber-700 hover:bg-amber-800 rounded-lg text-white text-xs md:text-sm flex items-center justify-center p-2 font-bold 
          active:scale-95 transition-transform duration-100 w-10 md:w-35  gap-1 "
           >
-            <IoMdAdd className="font-bold text-lg " /> <span className="hidden md:flex "> Add Product </span>{" "}
+            <IoMdAdd className="font-bold text-lg " />{" "}
+            <span className="hidden md:flex "> Add Product </span>{" "}
           </button>
         </div>
         <AddProduct
@@ -178,11 +173,11 @@ const Products = ({ theme, loading, setLoading, setError }) => {
           <table className="table-fixed min-w-[800px] w-full text-left border-collapse">
             <thead>
               <tr className="">
-              <th className="p-3 w-30 ">SKU</th>
+                <th className="p-3 w-30 ">SKU</th>
                 <th className="p-3 w-40">Product Name</th>
                 <th className="py-3 w-32">Category</th>
                 <th className="py-3 w-32">Sub-Category</th>
-               {/* <th className="py-3 w-32">Slugs</th>
+                {/* <th className="py-3 w-32">Slugs</th>
                 <th className="py-3 w-32">Tags</th>  */}
                 <th className="py-3 w-28 text-center">Price ($)</th>
                 <th className="py-3 w-28 text-center">Weight </th>
@@ -224,14 +219,11 @@ const Products = ({ theme, loading, setLoading, setError }) => {
         </div>
       </div>
 
-    <Pagination
-    currentPage = {currentPage}
-    total = {totalPages}
-    setCurrentPage={setCurrentPage}
-     />
-    
-  
-
+      <Pagination
+        currentPage={currentPage}
+        total={totalPages}
+        setCurrentPage={setCurrentPage}
+      />
     </div>
   );
 };

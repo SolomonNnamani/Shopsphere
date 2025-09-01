@@ -17,6 +17,7 @@ const Customers = ({ theme, setLoading }) => {
 
      useEffect(() => {
     const fetchOrders = async () => {
+      setLoading(true)
       try {
         const res = await fetchWithAuth('/dashboard/customers'); 
         const data = await res.json();
@@ -30,6 +31,8 @@ const Customers = ({ theme, setLoading }) => {
       } catch (err) {
         console.error("Failed to fetch Customer details", err);
         toast.error('Failed to fetch customer datails, please check your network')
+      }finally{
+        setLoading(false)
       }
     };
 
@@ -146,8 +149,8 @@ function formatInternationalPhone(rawPhone) {
           <FaSearch className="text-2xl " />
         </div>
 
-        <div className="relative w-full min-h-screen overflow-x-scroll hide-scrollbar-lg">
-          <table className="table-fixed min-w-[800px] w-full   border-collapse ">
+        <div className="relative w-full  overflow-x-scroll hide-scrollbar-lg">
+          <table className="table-fixed min-w-[800px] w-full    border-collapse ">
             <thead>
               <tr className="text-center">
                 <th className="p-3 w-[180px] break-words ">CUSTOMER ID</th>

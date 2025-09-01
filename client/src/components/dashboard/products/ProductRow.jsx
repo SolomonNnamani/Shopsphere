@@ -4,12 +4,12 @@ import AnimatedLogo from "../../reuseable/AnimatedLogo";
 import DeleteBtn from "./DeleteProduct";
 import { FaCircle } from "react-icons/fa";
 import { RiArrowDropDownLine, RiArrowDropUpLine } from "react-icons/ri";
-import {fetchWithAuth} from '../utils/fetchWithAuth.js'
+import { fetchWithAuth } from "../utils/fetchWithAuth.js";
 
 const ProductRow = ({ item, product, setProduct, setLoading, theme }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [form, setForm] = useState({
-    sku:item.sku,
+    sku: item.sku,
     productName: item.productName,
     price: item.price,
     stkQuantity: item.stkQuantity,
@@ -17,12 +17,11 @@ const ProductRow = ({ item, product, setProduct, setLoading, theme }) => {
     status: item.status,
     color: item.color,
     size: item.size,
-    weight:item.weight,
+    weight: item.weight,
     gender: item.gender,
     subCategory: item.subCategory,
     slug: item.slug,
-    tags:item.tags
-
+    tags: item.tags,
   });
   const [isDropDown, setIsDropDown] = useState(false);
 
@@ -47,94 +46,91 @@ const ProductRow = ({ item, product, setProduct, setLoading, theme }) => {
   }, [form.stkQuantity]);
 
   const handleSave = async () => {
-     const role = localStorage.getItem("role");
+    const role = localStorage.getItem("role");
 
-    if(role !== "admin"){
-      toast.error("You must be an admin to perform this action!")
-      return
-    }else{
-    const updatedProduct = product.map((t) => {
-      if (t._id === item._id) {
-        return {
-          ...t,
-          sku:form.sku,
-          productName: form.productName,
-          price: form.price,
-          stkQuantity: form.stkQuantity,
-          category: form.category,
-          lastUpdated: new Date().toISOString().slice(0, 10),
-          status: form.status,
-          color: form.color,
-    size: form.size,
-    weight:form.weight,
-    gender: form.gender,
-    subCategory:form.subCategory,
-    slug:form.slug,
-    tags:form.tags,
-          edit: true,
-        };
-      }
-      return t;
-    });
-    const editedProduct = updatedProduct.find((t) => t._id === item._id);
-
-    setLoading(true);
-    try {
-      const res = await fetchWithAuth(
-        `/api/dashboard/product/editProduct/${editedProduct._id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-             sku:editedProduct.sku,
-            productName: editedProduct.productName,
-            price: editedProduct.price,
-            stkQuantity: editedProduct.stkQuantity,
-            category: editedProduct.category,
-            lastUpdated: editedProduct.lastUpdated,
-            status: editedProduct.status,
-            color: editedProduct.color,
-    size: editedProduct.size,
-     weight:editedProduct.weight,
-    gender: editedProduct.gender,
-     subCategory:editedProduct.subCategory,
-    slug:editedProduct.slug,
-    tags:editedProduct.tags,
-            edit: editedProduct.edit,
-          }),
+    if (role !== "admin") {
+      toast.error("You must be an admin to perform this action!");
+      return;
+    } else {
+      const updatedProduct = product.map((t) => {
+        if (t._id === item._id) {
+          return {
+            ...t,
+            sku: form.sku,
+            productName: form.productName,
+            price: form.price,
+            stkQuantity: form.stkQuantity,
+            category: form.category,
+            lastUpdated: new Date().toISOString().slice(0, 10),
+            status: form.status,
+            color: form.color,
+            size: form.size,
+            weight: form.weight,
+            gender: form.gender,
+            subCategory: form.subCategory,
+            slug: form.slug,
+            tags: form.tags,
+            edit: true,
+          };
         }
-      );
-      const data = await res.json();
-      if (!res.ok) {
-        toast.error(
-          data.error || "Something went wrong while updating the product."
-        );
+        return t;
+      });
+      const editedProduct = updatedProduct.find((t) => t._id === item._id);
 
-      } else {
-        toast.success(data.message || "product updated successfully");
-        setProduct(updatedProduct);
-        setIsEditing(false);
+      setLoading(true);
+      try {
+        const res = await fetchWithAuth(
+          `/api/dashboard/product/editProduct/${editedProduct._id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              sku: editedProduct.sku,
+              productName: editedProduct.productName,
+              price: editedProduct.price,
+              stkQuantity: editedProduct.stkQuantity,
+              category: editedProduct.category,
+              lastUpdated: editedProduct.lastUpdated,
+              status: editedProduct.status,
+              color: editedProduct.color,
+              size: editedProduct.size,
+              weight: editedProduct.weight,
+              gender: editedProduct.gender,
+              subCategory: editedProduct.subCategory,
+              slug: editedProduct.slug,
+              tags: editedProduct.tags,
+              edit: editedProduct.edit,
+            }),
+          }
+        );
+        const data = await res.json();
+        if (!res.ok) {
+          toast.error(
+            data.error || "Something went wrong while updating the product."
+          );
+        } else {
+          toast.success(data.message || "product updated successfully");
+          setProduct(updatedProduct);
+          setIsEditing(false);
+        }
+        setIsDropDown(false);
+      } catch (error) {
+        console.log("Error updating product: ", error);
+        toast.error(
+          "Unable to update this product. Please check your network and try again."
+        );
+      } finally {
+        setLoading(false);
       }
-      setIsDropDown(false)
-    } catch (error) {
-      console.log("Error updating product: ", error);
-      toast.error(
-        "Unable to update this product. Please check your network and try again."
-      );
-    } finally {
-      setLoading(false);
     }
-  }
   };
 
   const handleEditToggle = () => {
     if (isEditing) handleSave();
     setIsEditing((prev) => !prev);
   };
-
- 
 
   const toggleDropDown = () => {
     setIsDropDown((prev) => !prev);
@@ -164,8 +160,6 @@ const ProductRow = ({ item, product, setProduct, setLoading, theme }) => {
           <p> {item.sku}</p>
         )}
       </td>
-
-
 
       <td
         className={` font-medium text-sm p-3 w-40 ${
@@ -207,28 +201,26 @@ const ProductRow = ({ item, product, setProduct, setLoading, theme }) => {
             }}
             className="w-20 outline-none rounded-sm px-1"
           >
- <option value="Shoes">Shoes</option>
-<option value="Suits & Jackets">Suits & Jackets</option>
-<option value="Shirts">Shirts</option>
-<option value="Trousers">Trousers</option>
-<option value="Accessories">Accessories</option>
-<option value="Belts">Belts</option>
-<option value="Watches">Watches</option>
-<option value="Bags">Bags</option>
-
+            <option value="Shoes">Shoes</option>
+            <option value="Suits & Jackets">Suits & Jackets</option>
+            <option value="Shirts">Shirts</option>
+            <option value="Trousers">Trousers</option>
+            <option value="Accessories">Accessories</option>
+            <option value="Belts">Belts</option>
+            <option value="Watches">Watches</option>
+            <option value="Bags">Bags</option>
           </select>
         ) : (
           <p>{item.category} </p>
         )}
       </td>
-      
-    {/**  subcategory  */}
-    <td
+
+      {/**  subcategory  */}
+      <td
         className={` font-medium text-sm text-center w-28 ${
           theme ? "headerDark" : "headerLight"
         }`}
       >
-        
         {isEditing ? (
           <select
             name="subCategory"
@@ -241,38 +233,38 @@ const ProductRow = ({ item, product, setProduct, setLoading, theme }) => {
             }}
             className="w-20 outline-none rounded-sm px-1"
           >
- <option value="Formal suit">Formal suit</option>
-    <option value="Tailored suit">Tailored suit</option>
-    <option value="Wedding suit">Wedding suit</option>
-    <option value="Jackets">Jackets</option>
-    <option value="Business suit">Business suit</option>
-    <option value="Long sleeve shirts">Long sleeve shirts</option>
-    <option value="Short sleeve shirts">Short sleeve shirts</option>
-    <option value="Striped shirts">Striped shirts</option>
-    <option value="Formal Trousers">Formal Trousers</option>
-    <option value="Tailored Trousers">Tailored Trousers</option>
-    <option value="Chinos trousers">Chinos trousers</option>
-    <option value="Loafer shoes">Loafer shoes</option>
-    <option value="Oxford Shoes">Oxford Shoes</option>
-    <option value="Leather Shoes">Leather Shoes</option>
-    <option value="Leather Bags">Leather Bags</option>
-    <option value="Slings & Crossbody Bags">Slings & Crossbody Bags</option>
-    <option value="Work Bags">Work Bags</option>
-    <option value="Duffel Bags">Duffel Bags</option>
-    <option value="Gold watches">Gold watches</option>
-    <option value="Silver watches">Silver watches</option>
-    <option value="Wallets">Wallets</option>
-    <option value="Bracelets">Bracelets</option>
-    <option value="Bowties">Bowties</option>
-
+            <option value="Formal suit">Formal suit</option>
+            <option value="Tailored suit">Tailored suit</option>
+            <option value="Wedding suit">Wedding suit</option>
+            <option value="Jackets">Jackets</option>
+            <option value="Business suit">Business suit</option>
+            <option value="Long sleeve shirts">Long sleeve shirts</option>
+            <option value="Short sleeve shirts">Short sleeve shirts</option>
+            <option value="Striped shirts">Striped shirts</option>
+            <option value="Formal Trousers">Formal Trousers</option>
+            <option value="Tailored Trousers">Tailored Trousers</option>
+            <option value="Chinos trousers">Chinos trousers</option>
+            <option value="Loafer shoes">Loafer shoes</option>
+            <option value="Oxford Shoes">Oxford Shoes</option>
+            <option value="Leather Shoes">Leather Shoes</option>
+            <option value="Leather Bags">Leather Bags</option>
+            <option value="Slings & Crossbody Bags">
+              Slings & Crossbody Bags
+            </option>
+            <option value="Work Bags">Work Bags</option>
+            <option value="Duffel Bags">Duffel Bags</option>
+            <option value="Gold watches">Gold watches</option>
+            <option value="Silver watches">Silver watches</option>
+            <option value="Wallets">Wallets</option>
+            <option value="Bracelets">Bracelets</option>
+            <option value="Bowties">Bowties</option>
           </select>
         ) : (
           <p>{item.subCategory}</p>
         )}
       </td>
-     
-      
-    {/*Slug
+
+      {/*Slug
        <td
         className={` font-medium text-sm text-center w-28 ${
           theme ? "headerDark" : "headerLight"
@@ -296,8 +288,7 @@ const ProductRow = ({ item, product, setProduct, setLoading, theme }) => {
         )}
       </td>*/}
 
-
-{/*tags  
+      {/*tags  
       <td
         className={` font-medium text-sm text-center w-28 ${
           theme ? "headerDark" : "headerLight"
@@ -327,19 +318,12 @@ const ProductRow = ({ item, product, setProduct, setLoading, theme }) => {
       </td>
    **/}
 
-
-
-
-
-
-
-{/**Price */}
+      {/**Price */}
       <td
         className={` font-medium text-sm text-center w-28 ${
           theme ? "headerDark" : "headerLight"
         }`}
       >
-        
         {isEditing ? (
           <input
             name="price"
@@ -357,14 +341,12 @@ const ProductRow = ({ item, product, setProduct, setLoading, theme }) => {
         )}
       </td>
 
-
       {/**Weight */}
       <td
         className={` font-medium text-sm text-center w-28 ${
           theme ? "headerDark" : "headerLight"
         }`}
       >
-        
         {isEditing ? (
           <input
             name="weight"
@@ -381,16 +363,13 @@ const ProductRow = ({ item, product, setProduct, setLoading, theme }) => {
           <p>{item.weight} kg</p>
         )}
       </td>
-   
 
-
-      {/**Stock Quantity */} 
+      {/**Stock Quantity */}
       <td
         className={` font-medium text-sm text-center w-28 ${
           theme ? "headerDark" : "headerLight"
         }`}
       >
-       
         {isEditing ? (
           <input
             name="stkQuantity"
@@ -441,13 +420,12 @@ const ProductRow = ({ item, product, setProduct, setLoading, theme }) => {
           <span className="text-gray-500"> Unknown</span>
         )}
       </td>
-{/**Color */}
+      {/**Color */}
       <td
         className={` font-medium text-sm p-3 text-center w-24 ${
           theme ? "headerDark" : "headerLight"
         }`}
       >
-        
         {isEditing ? (
           <input
             name="color"
@@ -471,7 +449,6 @@ const ProductRow = ({ item, product, setProduct, setLoading, theme }) => {
           theme ? "headerDark" : "headerLight"
         }`}
       >
-        
         {isEditing ? (
           <input
             name="size"
@@ -495,7 +472,6 @@ const ProductRow = ({ item, product, setProduct, setLoading, theme }) => {
           theme ? "headerDark" : "headerLight"
         }`}
       >
-        
         {isEditing ? (
           <input
             name="gender"
@@ -558,17 +534,17 @@ const ProductRow = ({ item, product, setProduct, setLoading, theme }) => {
                       onClick={() => {
                         setForm({
                           sku: item.sku,
-    productName: item.productName,
-    price: item.price,
-    stkQuantity: item.stkQuantity,
-    category: item.category,
-    subCategory: item.subCategory,
-    status: item.status,
-    slug: item.slug,
-    tags: item.tags,
-    color: item.color,
-    size: item.size,
-    gender: item.gender,
+                          productName: item.productName,
+                          price: item.price,
+                          stkQuantity: item.stkQuantity,
+                          category: item.category,
+                          subCategory: item.subCategory,
+                          status: item.status,
+                          slug: item.slug,
+                          tags: item.tags,
+                          color: item.color,
+                          size: item.size,
+                          gender: item.gender,
                         });
                         setIsEditing(false);
                         setIsDropDown(false);
